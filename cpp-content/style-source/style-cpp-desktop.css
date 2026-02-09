@@ -1,0 +1,141 @@
+
+@charset "UTF-8";
+
+
+
+/* TELAS DESKTOP */
+
+
+
+
+
+/* HEADER _____________________________________________________________________________________________________________________*/
+
+    header
+    {
+        
+        padding: 0.75em max(1.5em , 3.5vw);
+    }
+
+
+/* Links */
+
+    div#container-links:hover
+    {
+
+        box-shadow: inset 0em 0em 2em var(--color-medium-black-01);
+        background-color: var(--color-darkest-black-02);
+    }
+
+    div#container-links:hover > h2
+    {
+
+        color: var(--color-lighter-white-02);
+        display: block;
+    }
+
+
+/* Burger/Normal Menu */
+
+    div#container-burge { display: none; }
+    div#container-links { display: flex; }
+
+
+
+
+    /* THIS SECTION HAS ENDED! */
+
+
+
+
+/* MAIN _______________________________________________________________________________________________________________________*/
+
+    main
+    {
+
+        padding: 1em;
+    }
+
+    main > *
+    {
+
+        margin: 2em auto;
+    }
+
+
+/*  */
+
+    section#apres
+    {
+
+        flex-direction: row;
+        gap: max(1em , 2vw);
+        box-shadow: none;
+    }
+
+    section#apres > div
+    {
+
+        border-radius: 0.75em;
+    }
+
+
+
+
+    section#apres > div:nth-of-type(1) > h2 { display: none; }
+    section#apres > div:nth-of-type(2) > h2 { display: block; }
+
+
+
+
+
+/* Div Img */
+
+    section#apres > div:nth-of-type(1)
+    {
+
+        border-radius: 1em;
+        max-height: 18em;
+        border: none;
+    }
+
+
+
+/* Div Text */
+
+    section#apres > div > p
+    {
+
+        padding: 0.5em 1em;
+    }
+
+    section#apres > div > h2
+    {
+
+        text-indent: 0em;
+        padding: 0.25em 0.5em;
+    }
+
+
+
+
+
+
+
+/* FOOTER _____________________________________________________________________________________________________________________*/
+
+    footer > *
+    { 
+        width: 85%;
+        max-width: 75em;
+        margin: auto;
+    }
+    
+    div#notes
+    {
+        display: grid;
+        grid-template-columns: repeat( 3 , 30% );
+        gap:05%;
+    }
+
+

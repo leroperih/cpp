@@ -8,77 +8,95 @@
 
 :root {
 
-  --header-content-size: 4em;
+    --header-content-size: 4em;
 
 
+    --hover-color-01: #ffffff08;
+    --hover-color-02: #ffffff28;
+    --default-color-grey-01: #606060;
+    --default-color-grey-02: #60606060;
+    --default-color-red-01: #f00000;
+    --default-color-red-02: #f0000080;
+
+    --color-darkest-black-01: #000000;
+    --color-darkest-black-02: #000000f0;
+    --color-darkest-black-03: #000000c0;
+    --color-dark-black-01: #050505;
+    --color-dark-black-02: #05050580;
+    --color-medium-black-01: #161616;
+    --color-medium-black-02: #16161680;
+    --color-lighter-white-01: #ffffff;
+    --color-lighter-white-02: #ffffffd0;
+    --color-light-grey-01: #b0b0b0;
+    --color-light-grey-02: #b0b0b080;
+    --color-dark-grey-01: #2f2f2f;
+    --color-dark-grey-02: #2f2f2f80;
+
+    --study-color-01: #ffee40;
+    --study-color-02: #ffee4080;
+    --study-color-03: #ffee4040;
 
 
-  --hover-color-01: #ffffff08;
-  --hover-color-02: #ffffff28;
-  --default-color-grey-01: #606060;
-  --default-color-grey-02: #60606060;
-  --default-color-red-01: #f00000;
-  --default-color-red-02: #f0000080;
-
-  --color-darkest-black-01: #000000;
-  --color-darkest-black-02: #000000f0;
-  --color-darkest-black-03: #000000c0;
-  --color-dark-black-01: #050505;
-  --color-dark-black-02: #05050580;
-  --color-medium-black-01: #161616;
-  --color-medium-black-02: #16161680;
-  --color-lighter-white-01: #ffffff;
-  --color-lighter-white-02: #ffffffd0;
-  --color-light-grey-01: #b0b0b0;
-  --color-light-grey-02: #b0b0b080;
-  --color-dark-grey-01: #2f2f2f;
-  --color-dark-grey-02: #2f2f2f80;
-
-  --study-color-01: #ffee40;
-  --study-color-02: #ffee4080;
-  --study-color-03: #ffee4040;
-
-
-
-
-  --fonte-animatic: 'Amatic SC', cursive;
-  --font-apple: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  --font-angel: "Angel", sans-serif;
+    --fonte-animatic: 'Amatic SC', cursive;
+    --font-apple: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    --font-angel: "Angel", sans-serif;
 
 }
 
 
-* {  /* CSS Padrão Geral */
-  padding: 0em; margin: 0em;
-  font-family: Arial, Helvetica, sans-serif;
-  text-decoration: none;
-} body, html {
-  background-color: var(--color-dark-black-01);
-  width: 100vw; min-height: 100vh;
-  overflow-x: hidden;
-} body {
-  position: relative;
-} body * {
-  color: var(--color-lighter-white-02);
-}
+/* CSS Padrão Geral */
 
-
-.scroll::-webkit-scrollbar {  /* Scroll Space */
-  background-color: var(--color-darkest-black-01); width: 0.5em;
-} .scroll::-webkit-scrollbar-track {  /* Fundo Scroll */
-  border-radius: 0.25em; border: 2px solid var(--color-darkest-black-01);
-  margin: 0.75em 0em;
-} .scroll::-webkit-scrollbar-track:hover {
-  background: var(--color-medium-black-01);
-} .scroll::-webkit-scrollbar-thumb {  /* Mover Scroll */
-  border: 1px solid var(--color-darkest-black-01); border-radius: 0.25em;
-  background-color: var(--color-medium-black-01);
-} .scroll::-webkit-scrollbar-thumb:hover {
-  background: var(--color-dark-grey-01);
-}
+    *
+    {
+        padding: 0em; margin: 0em;
+        font-family: Arial, Helvetica, sans-serif;
+        text-decoration: none;
+    }
+    body, html
+    {
+        background-color: var(--color-dark-black-01);
+        width: 100vw; min-height: 100vh;
+        overflow-x: hidden;
+    }
+    body
+    {
+        position: relative;
+    }
+    body *
+    {
+        color: var(--color-lighter-white-02);
+    }
 
 
 
+/* Scroll Space */
+
+    .scroll::-webkit-scrollbar
+    {
+        width: 0.5em;
+        background-color: var(--color-darkest-black-01);
+    }
+    
+    .scroll::-webkit-scrollbar-track
+    {  /* Fundo Scroll */
+        border-radius: 0.25em; border: 2px solid var(--color-darkest-black-01);
+        margin: 0.75em 0em;
+    }
+    
+    .scroll::-webkit-scrollbar-track:hover
+    {
+        background: var(--color-medium-black-01);
+    }
+    
+    .scroll::-webkit-scrollbar-thumb
+    {  /* Mover Scroll */
+        border: 1px solid var(--color-darkest-black-01); border-radius: 0.25em;
+        background-color: var(--color-medium-black-01);
+    }
+    
+    .scroll::-webkit-scrollbar-thumb:hover {
+        background: var(--color-dark-grey-01);
+    }
 
 
 
@@ -91,44 +109,48 @@
 
 
 
-header { /* header --------------------------------------------------------------------------------------------------------------------- */
-
-  padding-top: 3.5em;
-} header > div {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.5em;
-  max-width: 64em;
-  margin: auto;
-  padding: 0em 1em;
-} header > div > h1 {
-  font-size: 1.8em;
-}
 
 
+/* HEADER _____________________________________________________________________________________________________________________*/
 
-div#container-back ,
-div#container-back * {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  width: 100%; height: 100%;
-  transition-duration: 0.15s;
-} div#container-back {
-  height: var(--header-content-size);
-  width: var(--header-content-size);
-  border-radius: 50%;
-  border: 2px solid var(--color-medium-black-01);
-} div#container-back:hover > a ,  /* Hover */
-  div#container-back:hover > div {
-  width: 90%; height: 90%;
-} div#container-back:hover {
-  background: var(--hover-color-01);
-  box-shadow: 0em 0em 0.25em var(--hover-color-01);
- }
+    header { 
+
+      padding-top: 3.5em;
+    } header > div {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5em;
+      max-width: 64em;
+      margin: auto;
+      padding: 0em 1em;
+    } header > div > h1 {
+      font-size: 1.8em;
+    }
+
+
+
+    div#container-back ,
+    div#container-back * {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      width: 100%; height: 100%;
+      transition-duration: 0.15s;
+    } div#container-back {
+      height: var(--header-content-size);
+      width: var(--header-content-size);
+      border-radius: 50%;
+      border: 2px solid var(--color-medium-black-01);
+    } div#container-back:hover > a ,  /* Hover */
+      div#container-back:hover > div {
+      width: 90%; height: 90%;
+    } div#container-back:hover {
+      background: var(--hover-color-01);
+      box-shadow: 0em 0em 0.25em var(--hover-color-01);
+    }
 
 
 

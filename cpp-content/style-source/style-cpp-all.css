@@ -436,12 +436,12 @@
         color: var(--color-lighter-white-02);
     }
 
-    div#personal-projects-area > *
+    div#personal-projects-area > * , div#personal-projects-menu > *
     {
         margin: 2em auto;
     }
 
-    div#personal-projects-menu > div
+    div#personal-projects-menu > div#personal-menu
     {
         background-color: var(--color-dark-grey-02);
     }
@@ -457,7 +457,6 @@
 
     footer
     {
-
         min-height: 8em;
         padding: 1em;
         background-color: var(--color-medium-black-02);
@@ -465,7 +464,6 @@
 
     footer *
     {
-
         color: var(--color-lighter-white-02);
         font-family: var(--font-notes);
     }

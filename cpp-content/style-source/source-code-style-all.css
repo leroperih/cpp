@@ -94,7 +94,8 @@
         background-color: var(--color-medium-black-01);
     }
     
-    .scroll::-webkit-scrollbar-thumb:hover {
+    .scroll::-webkit-scrollbar-thumb:hover 
+    {
         background: var(--color-dark-grey-01);
     }
 
@@ -113,43 +114,51 @@
 
 /* HEADER _____________________________________________________________________________________________________________________*/
 
-    header { 
+    header
+    { 
 
-      padding-top: 3.5em;
-    } header > div {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.5em;
-      max-width: 64em;
-      margin: auto;
-      padding: 0em 1em;
-    } header > div > h1 {
-      font-size: 1.8em;
+        padding-top: 3.5em;
+    }
+    header > div 
+    {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5em;
+        max-width: 64em;
+        margin: auto;
+        padding: 0em 1em;
+    } header > div > h1 
+    {
+        font-size: 1.8em;
     }
 
 
 
     div#container-back ,
-    div#container-back * {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      width: 100%; height: 100%;
-      transition-duration: 0.15s;
-    } div#container-back {
-      height: var(--header-content-size);
-      width: var(--header-content-size);
-      border-radius: 50%;
-      border: 2px solid var(--color-medium-black-01);
+    div#container-back * 
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 100%; height: 100%;
+        transition-duration: 0.15s;
+    } div#container-back 
+    {
+        height: var(--header-content-size);
+        width: var(--header-content-size);
+        border-radius: 50%;
+        border: 2px solid var(--color-medium-black-01);
     } div#container-back:hover > a ,  /* Hover */
-      div#container-back:hover > div {
-      width: 90%; height: 90%;
-    } div#container-back:hover {
-      background: var(--hover-color-01);
-      box-shadow: 0em 0em 0.25em var(--hover-color-01);
+      div#container-back:hover > div 
+      {
+        width: 90%; height: 90%;
+    } div#container-back:hover 
+    {
+        background: var(--hover-color-01);
+        box-shadow: 0em 0em 0.25em var(--hover-color-01);
     }
 
 
@@ -158,144 +167,188 @@
 
 
 
-main { /* Main ------------------------------------------------------------------------------------------------------------------------- */
+    main 
+    { /* Main ------------------------------------------------------------------------------------------------------------------------- */
 
-  margin-bottom: 9em;
-  padding: 0em 1em;
-} main > div {
-  box-sizing: border-box;
-  background-color: var(--color-lighter-white-01);
-  border-radius: 0.75em;
-  border: 0.05em solid var(--color-dark-grey-01);
-  max-width: 64em;
-  padding: 0em 2em;
-  margin: 1.5em auto;
-} main > div > input.unico {
-  min-width: 6em;
-  padding: 0.5em 1em;
-  font-size: 1.75em;
-  margin: 0.75em;
-} main > div#git-desf {
-  padding: 0em 1em;
-} main > div#git-desf > * {
-  margin: 0.8em 0em;
-} main > div#code-js > code {
-  margin: 0.5em 0em;
-} main > div#code-js {
-  padding: 1em;
-  background-color: var(--color-medium-black-01);
-  border: 0.05em solid var(--color-darkest-black-02);
-} main * {
-  color: var(--color-darkest-black-01);
-} main > div > * {
-  display: block;
-  margin: 1.25em 0em;
-} main > div > p {
-  text-indent: 1.5em;
-}
-
-
-
-
-
-main .little {
-  padding: 0.35em 0.5em;
-  font-size: 1.2em;
-  border-radius: 0.25em;
-  border: 0.05em solid var(--color-darkest-black-01);
-  width: 8em;
-} main .medium {
-  padding: 0.5em 1em;
-  font-size: 1.5em;
-  border-radius: 0.25em;
-  border: 0.05em solid var(--color-darkest-black-01);
-} main .button {
-  background-color: var(--color-medium-black-01);
-  color: var(--color-lighter-white-02);
-} main .label {
-  border: none;
-  padding: 0em;
-} main .button:hover {
-  background-color: var(--color-dark-grey-01);
-}
-
-main > div#git-desf > div.inputs-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1em;
-  margin: 1.2em 0em;
-} main > div > div.inputs-container > div {
-  white-space: nowrap;
-} main > div > div.inputs-container > input ,
-  main > div > div.inputs-container > button {
-  display: inline-block;
-} main > div > section#res span {
-  white-space: nowrap;
-  font-family: 'Courier New', Courier, monospace;
-  font-weight: bold;
-} main > div#git-desf > p#git-desf {
-  text-indent: 0.25em;
-  margin: 1em 0em;
-  font-size: 1.25em;
-}
-
-
-section#res {
-  border: 0.05em solid var(--color-darkest-black-01);
-  border-radius: 0.25em;
-  background-color: var(--color-medium-black-02);
-  box-shadow: inset 0em 0em 1vw var(--color-medium-black-02);
-  font-size: 1.5em;
-  padding: 1em;
-  color: var(--color-dark-black-01);
-} section#res h3 {
-  font-weight: normal;
-}
-
-
-
- div#code-js > code > span#in {
-  color: var(--color-light-grey-01);
-} div#code-js > code > span {
-  display: block;
-  font-family: 'Courier New', Courier, monospace;
-  color: #008000;
-} div#code-js > code > span#in::before {
-  content: "|> ";
-} div#code-js > code > span::before {
-  content: "| ";
-  color: var(--color-light-grey-01);
-}
-
-
-
-
-
-form > * {
-  margin: 0.5em;
-} fieldset ,
-  fieldset * {
-  padding: 0.25em;
-}
-
-main > div:nth-of-type(2) table {
-  margin: auto;
-}
-
-iframe#tela {
-  border-radius: 1vw;
-  height: 24em;
-  width: 100%;
-}
+        margin-bottom: 9em;
+        padding: 0em 1em;
+    } main > div 
+    {
+        box-sizing: border-box;
+        background-color: var(--color-lighter-white-01);
+        border-radius: 0.75em;
+        border: 0.05em solid var(--color-dark-grey-01);
+        max-width: 64em;
+        padding: 0em 2em;
+        margin: 1.5em auto;
+    } main > div > input.unico 
+    {
+        min-width: 6em;
+        padding: 0.5em 1em;
+        font-size: 1.75em;
+        margin: 0.75em;
+    } main > div#git-desf 
+    {
+        padding: 0em 1em;
+    } main > div#git-desf > * 
+    {
+        margin: 0.8em 0em;
+    } main > div#code-js > code 
+    {
+        margin: 0.5em 0em;
+    } main > div#code-js 
+    {
+        padding: 1em;
+        background-color: var(--color-medium-black-01);
+        border: 0.05em solid var(--color-darkest-black-02);
+    } main * 
+    {
+        color: var(--color-darkest-black-01);
+    } main > div > * 
+    {
+        display: block;
+        margin: 1.25em 0em;
+    } main > div > p 
+    {
+        text-indent: 1.5em;
+    }
 
 
 
 
 
 
+    main .little 
+    {
+      padding: 0.35em 0.5em;
+      font-size: 1.2em;
+      border-radius: 0.25em;
+      border: 0.05em solid var(--color-darkest-black-01);
+      width: 8em;
+    }
+    main .medium 
+    {
+      padding: 0.5em 1em;
+      font-size: 1.5em;
+      border-radius: 0.25em;
+      border: 0.05em solid var(--color-darkest-black-01);
+    }
+    main .button 
+    {
+      background-color: var(--color-medium-black-01);
+      color: var(--color-lighter-white-02);
+    }
+    main .label 
+    {
+      border: none;
+      padding: 0em;
+    }
+    main .button:hover 
+    {
+      background-color: var(--color-dark-grey-01);
+    }
+
+    main > div#git-desf > div.inputs-container 
+    {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin: 1.2em 0em;
+    }
+    main > div > div.inputs-container > div 
+    {
+        white-space: nowrap;
+    }
+    main > div > div.inputs-container > input ,
+      main > div > div.inputs-container > button 
+      {
+      display: inline-block;
+    } main > div > section#res span 
+    {
+      white-space: nowrap;
+      font-family: 'Courier New', Courier, monospace;
+      font-weight: bold;
+    } main > div#git-desf > p#git-desf {
+      text-indent: 0.25em;
+      margin: 1em 0em;
+      font-size: 1.25em;
+    }
 
 
-footer {  /* Footer -------------------------------------------------------------------------------------------------------------------- */
+    section#res 
+    {
+      border: 0.05em solid var(--color-darkest-black-01);
+      border-radius: 0.25em;
+      background-color: var(--color-medium-black-02);
+      box-shadow: inset 0em 0em 1vw var(--color-medium-black-02);
+      font-size: 1.5em;
+      padding: 1em;
+      color: var(--color-dark-black-01);
+    } section#res h3 
+    {
+      font-weight: normal;
+    }
+
+
+
+    div#code-js > code > span#in 
+    {
+      color: var(--color-light-grey-01);
+    } div#code-js > code > span 
+    {
+      display: block;
+      font-family: 'Courier New', Courier, monospace;
+      color: #008000;
+    } div#code-js > code > span#in::before 
+    {
+      content: "|> ";
+    } div#code-js > code > span::before 
+    {
+      content: "| ";
+      color: var(--color-light-grey-01);
+    }
+
+
+
+
+
+    form > * 
+    {
+      margin: 0.5em;
+    } fieldset ,
+      fieldset * 
+      {
+      padding: 0.25em;
+    }
+
+    main > div:nth-of-type(2) table 
+    {
+      margin: auto;
+    }
+
+    iframe#tela 
+    {
+      border-radius: 1vw;
+      height: 24em;
+      width: 100%;
+    }
+
+
+
+
+
+    h2.file-title 
+    {
+      
+    }
+
+
+
+
+
+
+footer 
+{  /* Footer -------------------------------------------------------------------------------------------------------------------- */
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -305,17 +358,21 @@ footer {  /* Footer ------------------------------------------------------------
   width: 100%;
   height: 8em;
   background-color: var(--color-medium-black-02);
-} footer * {
+} footer * 
+{
   color: var(--color-lighter-white-02);
-} footer > div {
+} footer > div 
+{
   display: flex;
   align-items: center;
   gap: 1.75em;
-} footer > div > a > img {
+} footer > div > a > img 
+{
   height: 2em;
 }
 
 
-footer > div#op-navbar-fin > p {
+footer > div#op-navbar-fin > p 
+{
   margin-right: 1.75em;
 }

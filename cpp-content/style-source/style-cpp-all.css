@@ -319,6 +319,7 @@
 
     div.section-title *
     {
+        font-size: 2em;
         text-indent: 0.5em; 
         font-weight: 100;
         border-left: 2px solid var(--color-light-grey-01);
@@ -434,6 +435,11 @@
         font-family: 'Courier New', Courier, monospace, Times, monospace;
         color: var(--color-lighter-white-02);
     }
+
+    div#personal-projects-area > *
+    {
+        margin: 2em auto;
+    }    
 
 
 

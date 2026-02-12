@@ -52,6 +52,12 @@
         padding: 1em;
     }
 
+    main.menu-and-content
+    {
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
     main > *
     {
         margin: 2em auto;

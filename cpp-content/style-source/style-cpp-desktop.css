@@ -84,6 +84,11 @@
         width: 24em;
     }
 
+    main.menu-and-content > div#personal-projects-area
+    {
+        width: 80%;
+    }
+
 
     section#apres > div:nth-of-type(1) > h2 { display: none; }
     section#apres > div:nth-of-type(2) > h2 { display: block; }

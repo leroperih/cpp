@@ -439,7 +439,12 @@
     div#personal-projects-area > *
     {
         margin: 2em auto;
-    }    
+    }
+
+    div#personal-projects-menu > div
+    {
+        background-color: var(--color-dark-grey-02);
+    }
 
 
 

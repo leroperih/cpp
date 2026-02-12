@@ -1,0 +1,309 @@
+
+	// LESRO PROGRAM : Remapping for Desktop Navigation Program
+	// Annotation : 
+
+
+
+#include "header-source.h"
+
+
+
+
+LRESULT CALLBACK WindowProcedure ( HWND , UINT , WPARAM , LPARAM );
+LRESULT CALLBACK MouseHookProcedure ( int , WPARAM , LPARAM );
+
+BOOL MyCreateWindowFunction ();
+
+
+
+
+
+
+
+
+// ENTRY POINT
+int main ()
+{
+
+	// HIDDEN WINDOW
+	if ( !MyCreateWindowFunction() )
+	{
+		std::cerr << "\n | Your attempt to create a [ Hidden Window ] has failed. Error Code : " << GetLastError() << std::endl;
+		return 1;
+	}
+	else { std::cout << "\n Congratulations! Your [ Hidden Window ] has been created!"; }
+
+
+
+	if ( !RegisterHotKey( Global_hWnd , HOTKEY_CODEMSG_TOGGLE_REMAPPING , MOD_CONTROL | MOD_SHIFT , VK_F1 ) )
+	{
+		DestroyWindow(Global_hWnd);
+		std::cerr << "\n | Your attempt to set the [ HotKey 01 ] has failed. Error Code : " << GetLastError() << std::endl;
+		return 1;
+	}
+	else { std::cout << "\n Congratulations! Your [ HotKey 01 ] has been registered"; }
+
+
+	std::thread t(WorkerThread);
+	t.detach();
+
+
+	// MOUSE HOOK
+	if ( !(hHook = SetWindowsHookExW( WH_MOUSE_LL , MouseHookProcedure , (HINSTANCE) NULL , 0 )) )
+	{
+		UnregisterHotKey( Global_hWnd , HOTKEY_CODEMSG_TOGGLE_REMAPPING );
+		DestroyWindow(Global_hWnd);
+		std::cerr << "\n | Your attempt to set a [ Mouse Hook ] has failed. Error Code : " << GetLastError() << std::endl;
+		return 1;
+	}
+	else { std::cout << "\n Congratulations! Your [ Windows Hook ] has been set up!"; }
+
+
+	std::cout << std::endl;
+
+
+
+
+
+
+	MSG msg = {};
+	while ( GetMessage(&msg, NULL , 0 , 0 ) != 0 )
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+
+
+
+
+	UnhookWindowsHookEx( hHook );
+	UnregisterHotKey( Global_hWnd , HOTKEY_CODEMSG_TOGGLE_REMAPPING );
+	DestroyWindow( Global_hWnd );
+	return 1;
+
+}
+
+
+// CREATE WINDOW
+BOOL MyCreateWindowFunction ()
+{
+
+	const wchar_t CLASS_NAME[] = L"My Extraordinary Class Name";
+	HINSTANCE hInstance = GetModuleHandle(nullptr);
+
+
+
+	WNDCLASSEXW wc = {};
+
+	wc.cbSize = sizeof(WNDCLASSEXW);
+	wc.lpszClassName = CLASS_NAME;
+	wc.lpfnWndProc = WindowProcedure;
+	wc.hInstance = hInstance;
+
+	RegisterClassExW(&wc);
+
+
+
+	HWND Local_hWnd = CreateWindowExW(
+		0 , CLASS_NAME , L"Title" , 0 ,
+		0 , 0 , 0 , 0 ,
+		HWND_MESSAGE , nullptr ,
+		hInstance , nullptr);
+
+
+	Global_hWnd = Local_hWnd;
+	if (Local_hWnd == NULL)
+	{ return FALSE; }
+	else { return TRUE; }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SHOW MESSAGE
+void MyShowMessageFunction ( const char which_event[] , int x , int y )
+{
+
+	std::cout << "\n | Displacement :    " << which_event << " button    [ dx = " << std::showpos << std::internal << std::setfill('0') << std::setw(5) << x << " ]   &  [ dy = " << std::showpos << std::internal << std::setfill('0') << std::setw(5) << y << " ]" << std::endl;
+
+}
+
+
+// SEND SHORTCUT
+void MySendShortcutFunction ( UINT mod_1 , UINT mod_2 , UINT v_key )
+{
+
+	INPUT inputs[6] = {};
+	int i = 0;
+
+	if (mod_1) { inputs[i].type = INPUT_KEYBOARD; inputs[i].ki.wVk = mod_1; i++; }
+	if (mod_2) { inputs[i].type = INPUT_KEYBOARD; inputs[i].ki.wVk = mod_2; i++; }
+	if (v_key) { inputs[i].type = INPUT_KEYBOARD; inputs[i].ki.wVk = v_key; i++; }
+
+	if (v_key) { inputs[i].type = INPUT_KEYBOARD; inputs[i].ki.wVk = v_key; inputs[i].ki.dwFlags = KEYEVENTF_KEYUP; i++; }
+	if (mod_2) { inputs[i].type = INPUT_KEYBOARD; inputs[i].ki.wVk = mod_2; inputs[i].ki.dwFlags = KEYEVENTF_KEYUP; i++; }
+	if (mod_1) { inputs[i].type = INPUT_KEYBOARD; inputs[i].ki.wVk = mod_1; inputs[i].ki.dwFlags = KEYEVENTF_KEYUP; i++; }
+
+	SendInput( i , inputs , sizeof(INPUT));
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// WINDOW PROCEDURE
+LRESULT CALLBACK WindowProcedure ( HWND Wnd_Handle , UINT Wnd_Msg , WPARAM wParam , LPARAM lParam )
+{
+
+	switch ( Wnd_Msg )
+	{
+			case WM_HOTKEY:
+					
+
+
+						if (wParam == HOTKEY_CODEMSG_TOGGLE_REMAPPING)
+				{
+					will_Remap_MouseButton = !will_Remap_MouseButton;
+
+					std::cout << "\n | Modificated : The Program Remapping Logic was " << ( will_Remap_MouseButton ? "Enabled" : "Disabled" ) << "!" << std::endl;
+
+				}
+
+
+
+				break;
+			default:
+
+					return (DefWindowProc( Wnd_Handle , Wnd_Msg , wParam , lParam ));
+
+	}
+
+
+	return 0;
+
+}
+
+
+// MOUSE HOOK PROCEDURE
+LRESULT CALLBACK MouseHookProcedure ( int Hook_Msg , WPARAM wParam , LPARAM lParam )
+{
+
+	if (Hook_Msg >= 0)
+	{
+
+			// BLOCK - CONTROL + CLICK
+			bool is_ControlKey_Pressed = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
+			if ( is_ControlKey_Pressed && wParam == WM_LBUTTONDOWN )
+			{
+					std::cout << "\n | Intercepted : Ctrl Key + Left Click blocked!" << std::endl;
+					return 1;
+			}
+
+
+
+			if ( will_Remap_MouseButton )
+			{
+
+
+					MSLLHOOKSTRUCT* pMouseStruct = reinterpret_cast<MSLLHOOKSTRUCT*>(lParam);
+
+
+
+				
+					// RIGHT MOUSE BUTTON
+					if ( wParam == WM_RBUTTONDOWN )
+					{
+
+							if (pMouseStruct->flags & LLMHF_INJECTED)
+							{ return CallNextHookEx(NULL, Hook_Msg, wParam, lParam); }
+
+							init_Cursor = pMouseStruct->pt;
+							return 1;
+					}
+					else if ( wParam == WM_RBUTTONUP )
+					{
+
+							if (pMouseStruct->flags & LLMHF_INJECTED)
+							{ return CallNextHookEx(NULL, Hook_Msg, wParam, lParam); }
+
+
+							POINT final_Cursor = pMouseStruct->pt;
+
+							{
+								std::lock_guard<std::mutex> lock(queueMutex);
+								actionQueue.push( { final_Cursor.x - init_Cursor.x , final_Cursor.y - init_Cursor.y , "RIGHT" });
+							}
+
+							queueCV.notify_one();
+
+							return 1;
+							
+					}
+
+
+
+
+					// MIDDLE MOUSE BUTTON
+					if ( wParam ==  WM_MBUTTONDOWN )
+					{
+
+							if (pMouseStruct->flags & LLMHF_INJECTED)
+							{ return CallNextHookEx(NULL, Hook_Msg, wParam, lParam); }
+
+							init_Cursor = pMouseStruct->pt;
+							return 1;
+					}
+					else if ( wParam == WM_MBUTTONUP )
+					{
+						
+							if (pMouseStruct->flags & LLMHF_INJECTED)
+							{ return CallNextHookEx(NULL, Hook_Msg, wParam, lParam); }
+
+
+							POINT final_Cursor = pMouseStruct->pt;
+
+							{
+								std::lock_guard<std::mutex> lock(queueMutex);
+								actionQueue.push({ final_Cursor.x - init_Cursor.x , final_Cursor.y - init_Cursor.y , "MIDDLE" });
+							}
+
+							queueCV.notify_one();
+
+							return 1;
+							
+					}
+
+
+
+
+			}
+
+	}
+
+
+	return (CallNextHookEx( hHook , Hook_Msg , wParam , lParam ));
+
+}

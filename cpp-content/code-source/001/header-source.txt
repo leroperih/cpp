@@ -1,0 +1,183 @@
+#pragma once
+
+
+#include <windows.h>
+#include <iostream>
+
+
+#include <iomanip>
+#include <string>
+
+
+#include <condition_variable>
+#include <thread>
+#include <queue>
+#include <mutex>
+
+
+
+
+#define HOTKEY_CODEMSG_TOGGLE_REMAPPING 997378420
+
+
+
+#define MIN_DISPLACEMENT_DRAG 200
+#define MAX_DEVIATION_THRESHOLD 150
+#define MAX_REMAPLESS_AREA 80
+
+
+
+
+
+struct MouseAction
+{
+	int x;
+	int y;
+	std::string which_button;
+};
+
+
+
+
+HWND Global_hWnd;
+HHOOK hHook;
+
+
+
+
+std::queue<MouseAction> actionQueue;
+std::mutex queueMutex;
+std::condition_variable queueCV;
+
+
+
+
+POINT init_Cursor;
+
+
+
+
+
+bool will_Remap_MouseButton = true;
+
+
+bool will_Simulate_MiddleMouse = false;
+bool will_Simulate_RightMouse = false;
+
+
+
+void MyShowMessageFunction(const char[], int, int);
+void MySendShortcutFunction(UINT, UINT, UINT);
+
+
+
+void WorkerThread()
+{
+
+
+	while (true)
+	{
+
+
+
+				MouseAction action;
+
+				{
+						std::unique_lock<std::mutex> lock(queueMutex);
+						queueCV.wait( lock , [] { return !actionQueue.empty(); } );
+
+						action = actionQueue.front();
+						actionQueue.pop();
+				}
+
+
+
+				if (action.which_button == "RIGHT")
+				{
+
+							MyShowMessageFunction(" Right", action.x, action.y);
+
+							if (abs(action.y) <= MAX_DEVIATION_THRESHOLD && abs(action.x) > MIN_DISPLACEMENT_DRAG) // X Displacement
+							{
+
+									if ( action.x < 0 )
+									{
+											MySendShortcutFunction(0, 0, VK_RIGHT);
+									}
+									else
+									{
+											MySendShortcutFunction(0, 0, VK_LEFT);
+									}
+							}
+							else if (abs(action.x) <= MAX_DEVIATION_THRESHOLD && abs(action.y) > MIN_DISPLACEMENT_DRAG) // Y Displacement
+							{
+
+									if ( action.y < 0 )
+									{
+											MySendShortcutFunction(VK_MENU, VK_SHIFT, VK_TAB);
+									}
+									else
+									{
+											MySendShortcutFunction(VK_LCONTROL, VK_SHIFT, VK_TAB);
+									}
+							}
+							else if (abs(action.x) <= MAX_REMAPLESS_AREA && abs(action.y) <= MAX_REMAPLESS_AREA)
+							{
+
+									INPUT inputs[2] = {};
+									inputs[0].type = INPUT_MOUSE; inputs[0].mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+									inputs[1].type = INPUT_MOUSE; inputs[1].mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+									SendInput(2, inputs, sizeof(INPUT));
+							}
+
+				}
+
+
+
+				if (action.which_button == "MIDDLE")
+				{
+
+							MyShowMessageFunction("Middle", action.x, action.y);
+
+							if ( abs(action.y) <= MAX_DEVIATION_THRESHOLD && abs(action.x) > MIN_DISPLACEMENT_DRAG) // X Displacement
+							{
+
+									if ( action.x < 0 )
+									{
+											MySendShortcutFunction( VK_LWIN , VK_LCONTROL , VK_RIGHT );
+									}
+									else
+									{
+											MySendShortcutFunction( VK_LWIN , VK_LCONTROL , VK_LEFT );
+									}
+							}
+							else if ( abs(action.x) <= MAX_DEVIATION_THRESHOLD && abs(action.y) > MIN_DISPLACEMENT_DRAG) // Y Displacement
+							{
+
+									if ( action.y < 0 )
+									{
+											MySendShortcutFunction( VK_LWIN , 0 , VK_TAB );
+									}
+									else
+									{
+											MySendShortcutFunction( VK_LWIN , 0 , 'M');
+									}
+							}
+							else if ( abs(action.x) <= MAX_REMAPLESS_AREA && abs(action.y) <= MAX_REMAPLESS_AREA )
+							{
+
+									INPUT inputs[2] = {};
+									inputs[0].type = INPUT_MOUSE; inputs[0].mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
+									inputs[1].type = INPUT_MOUSE; inputs[1].mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
+									SendInput( 2 , inputs , sizeof(INPUT) );
+							}
+
+				}
+
+
+
+
+
+	}
+
+}

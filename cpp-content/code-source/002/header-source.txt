@@ -1,0 +1,14 @@
+#pragma once
+
+
+#define HOTKEY_CODEMSG_CREATE_SPLITVIEW 959465480
+
+
+#include <windows.h>
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <vector>
+
+
+const std::string link_youtube = "https://www.youtube.com/feed/playlists";

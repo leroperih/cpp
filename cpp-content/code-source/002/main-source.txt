@@ -1,0 +1,91 @@
+
+
+//  LESRO PROGRAM : Open Split View Chrome Window
+//  Annotation : Perfect to watch youtube while use the translator
+
+
+#include "header-source.h"
+
+using namespace std::chrono_literals;
+
+
+void my_SendCommand_Function( UINT , UINT , UINT );
+
+void my_PasteLink_Function( const std::string& );
+
+
+
+
+
+
+// ENTRY POINT
+int main()
+{
+
+	ShellExecute(NULL, L"open", L"chrome.exe", L"--new-window --profile-directory=\"Profile 9\" \"https://translate.google.com.br/?hl=de&sl=de&tl=en&op=translate\"", NULL, SW_SHOWMAXIMIZED);
+	std::this_thread::sleep_for(1250ms);	
+	my_SendCommand_Function(VK_SHIFT, VK_MENU, 'N');
+	my_PasteLink_Function(link_youtube);
+	std::this_thread::sleep_for(800ms);
+	my_SendCommand_Function(VK_CONTROL, 0, 'V');
+	std::this_thread::sleep_for(500ms);
+	my_SendCommand_Function(0, 0, VK_RETURN);
+	std::this_thread::sleep_for(500ms);
+	my_SendCommand_Function(0, 0, VK_F11);
+
+
+	return 0;
+
+}
+
+
+
+
+
+// SPLIT CHROME VIEW
+void my_SendCommand_Function(UINT tMod_n01, UINT tMod_n02, UINT tKey_n03)
+{
+
+
+	std::vector<INPUT> inputs(6);
+
+
+	int i = 0;
+	if (tMod_n01) { inputs[i].ki.wVk = tMod_n01; inputs[i].ki.dwFlags = 0; i++; }
+	if (tMod_n02) { inputs[i].ki.wVk = tMod_n02; inputs[i].ki.dwFlags = 0; i++; }
+	if (tKey_n03) { inputs[i].ki.wVk = tKey_n03; inputs[i].ki.dwFlags = 0; i++; }
+						   
+	if (tKey_n03) { inputs[i].ki.wVk = tKey_n03; inputs[i].ki.dwFlags = KEYEVENTF_KEYUP; i++; }
+	if (tMod_n02) { inputs[i].ki.wVk = tMod_n02; inputs[i].ki.dwFlags = KEYEVENTF_KEYUP; i++; }
+	if (tMod_n01) { inputs[i].ki.wVk = tMod_n01; inputs[i].ki.dwFlags = KEYEVENTF_KEYUP; i++; }
+
+
+
+	for (int c = 0; c < i; c++)
+	{
+		inputs[c].type = INPUT_KEYBOARD;
+		inputs[c].ki.wScan = 0;
+		inputs[c].ki.time = 0;
+		inputs[c].ki.dwExtraInfo = 0;
+	}
+
+
+	SendInput(i, inputs.data(), sizeof(INPUT));
+
+
+}
+
+// ENTERS YOUTUBE'S URL
+void my_PasteLink_Function( const std::string& link )
+{
+
+	OpenClipboard(NULL);
+	EmptyClipboard();
+	HGLOBAL hg = GlobalAlloc(GMEM_MOVEABLE, link.size() + 1);
+	if (!hg) { CloseClipboard(); return; }
+	memcpy(GlobalLock(hg), link.c_str(), link.size());
+	GlobalUnlock(hg);
+	SetClipboardData(CF_TEXT, hg);
+	CloseClipboard();
+
+}

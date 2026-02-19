@@ -399,7 +399,6 @@
 
 
 
-
     h2.file-title 
     {
         display: block;
@@ -407,6 +406,19 @@
         text-align: center;
     }
 
+
+
+    /*
+    div#personal-projects-area > * , div#personal-projects-menu > *
+    {
+        margin: 2em auto;
+    }
+
+    div#personal-projects-menu > div#personal-menu
+    {
+        background-color: var(--color-dark-grey-02);
+    }
+    */
 
 
 

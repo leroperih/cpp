@@ -1,0 +1,43 @@
+
+// LESRO PROGRAM : My Open Online Games to Stay On Program
+// Annotation : 
+
+#define NOMINMAX
+
+#include <windows.h>
+#include <iostream>
+#include <limits>
+
+
+
+
+
+
+int main()
+{
+
+	int option = 0;
+
+	do
+	{
+		std::cout << "\n | Which Game do you want to play?\n\n   [1] Gartic\n   [2] Sudoku\n   [3] Apple Game" << std::endl;
+		std::cout << "\n   Choosen Option: ";
+		if (!(std::cin >> option)) {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+			system("cls");
+			continue; // Volta para o início do loop
+		}
+
+		system("cls");
+
+
+	} while ( option != 1 && option != 2 && option != 3);
+
+	if (option == 1) { ShellExecute( NULL , L"open" , L"chrome.exe" , L" --incognito --new-window --profile-directory=\"Profile 9\" \"https://gartic.io/\""    , NULL , SW_SHOWMAXIMIZED ); }
+	if (option == 2) { ShellExecute( NULL , L"open" , L"chrome.exe" , L" --incognito --new-window --profile-directory=\"Profile 9\" \"https://sudoku.com/de\"" , NULL , SW_SHOWMAXIMIZED); }
+	if (option == 3) { ShellExecute( NULL , L"open" , L"chrome.exe" , L" --incognito --new-window --profile-directory=\"Profile 9\" \"https://en.gamesaien.com/game/fruit_box/\"" , NULL , SW_SHOWMAXIMIZED); }
+
+	return 0;
+}

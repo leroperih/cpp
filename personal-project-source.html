@@ -245,6 +245,12 @@
             <div>
                 <h3>Annotations</h3>
                 <p>| Remenber forever: you are better alone.</p>
+                <p>| Create your certificate:</p>
+                <p>$cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=CertName" -CertStoreLocation Cert:\CurrentUser\My -KeyExportPolicy Exportable</p>
+                <p>| Sign your Program</p>
+                <p>signtool sign /a /v /s My /n "LesroGames" /t http://timestamp.digicert.com seu_programa.exe</p>
+                <p>| Post build method to sign your program:</p>
+                <p>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\signtool.exe" sign /sha1 9AE56FDBB86F47A7D4FA26307C6AD31101C2C191 /t http://timestamp.digicert.com /v "$(TargetPath)"</p>
             </div>
         </div>
 

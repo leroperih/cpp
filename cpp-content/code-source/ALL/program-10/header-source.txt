@@ -1,0 +1,254 @@
+#pragma once
+
+#include "values-source.h"
+
+#include <windows.h>
+#include <iostream>
+#include <dwmapi.h>
+
+#include <condition_variable>
+
+#include <iomanip>
+#include <vector>
+#include <string>
+#include <thread>
+#include <mutex>
+#include <queue>
+
+#pragma comment(lib, "dwmapi.lib")
+
+
+// MY TYPE DATA
+
+	struct mouseAction
+	{
+		int x = 0;
+		int y = 0;
+		std::string which_button;
+	};
+
+	struct Window_Monitor_Info
+	{
+		int z_position = 0;
+		HWND hWnd;
+	};
+
+	struct EnumContext
+	{
+		std::vector<Window_Monitor_Info> wnd_monit_struct;
+		int current_counter = 0;
+	};
+
+// GLOBAL VARIABLES
+
+	HWND global_Main_hWnd;
+	HWND global_Menu_hWnd;
+	HINSTANCE global_Menu_hInstance = GetModuleHandle(NULL);
+	HHOOK global_hHook;
+	const wchar_t global_Menu_ClassName[] = L"Um Nome de Classe de Janela do Bagulho!";
+
+	// WORKER THREAD VARIABLES
+		
+			std::queue<mouseAction> actionQueue;
+			std::mutex queueMutex;
+			std::condition_variable queueCV;
+
+	POINT init_Cursor;
+	bool will_Allow_MouseRemapping = true;
+
+// GLOBAL VARIABLES
+
+	void my_ShowDisplacement_Function( std::string , int , int );
+	void my_SendCommand_Function( UINT , UINT , UINT );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SHOW PROGRAM STATUS
+void my_ShowProgramStatus_Function( BOOL success , const char which_action[], const char which_piece[])
+{
+
+	if (success)
+	{
+		std::cout << "\n  Your attempt to " << which_action << " the [ " << which_piece << " ] has succeeded!";
+	}
+	else
+	{
+		std::cerr << "\n | Your attempt to " << which_action << " the [ " << which_piece << " ] has failed! Error Code: " << GetLastError() << std::endl;
+		std::cout << "\n | ._.) - Sorry, It's not me, it's probably you! "; system("pause");
+	}
+
+}
+
+
+// ENUM WINDOWS
+BOOL CALLBACK my_EnumWindowsProc(HWND hWnd, LPARAM lParam)
+{
+
+	// Fiutrage
+	if (!IsWindowVisible(hWnd)) return TRUE;
+	if (GetWindowTextLength(hWnd) == 0) return TRUE;
+	if (GetWindow(hWnd, GW_OWNER) != NULL) return TRUE;
+
+	// Checa uns estilos aí, troço complicado
+	LONG exStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
+	if ((exStyle & WS_EX_TOOLWINDOW) && !(exStyle & WS_EX_APPWINDOW)) return TRUE;
+
+	// Qual monitor
+	POINT pt; GetCursorPos(&pt);
+	if ( (MonitorFromWindow(hWnd, MONITOR_DEFAULTTONEAREST)) != ( MonitorFromPoint(pt, MONITOR_DEFAULTTONULL) ) ) return TRUE;
+
+	// Umas paradas
+	int cloaked = 0;
+	HRESULT hr = DwmGetWindowAttribute(hWnd, DWMWA_CLOAKED, &cloaked, sizeof(cloaked));
+	if (SUCCEEDED(hr) && cloaked != 0) return TRUE;
+
+
+
+
+	// Configuração
+	EnumContext* context = reinterpret_cast<EnumContext*>(lParam);
+	context->current_counter++;
+	Window_Monitor_Info W_M_I;
+
+	W_M_I.z_position = context->current_counter;
+
+	W_M_I.hWnd = hWnd;
+
+	context->wnd_monit_struct.push_back(W_M_I);
+	return TRUE;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// WORKER THREAD
+void my_WorkerThread_Function ()
+{
+
+	while (true)
+	{
+
+
+
+				mouseAction action;
+				{
+					std::unique_lock<std::mutex> lock(queueMutex);
+					queueCV.wait(lock, [] { return !actionQueue.empty(); });
+					action = actionQueue.front();
+					actionQueue.pop();
+				}
+
+
+
+
+
+				// RIGHT MOUSE BUTTON
+				if (action.which_button == "Right ")
+				{
+
+
+							my_ShowDisplacement_Function( "> " + action.which_button, action.x, action.y);
+
+							if ( (abs(action.x)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.y)<=MAX_DEVIATION_THRESHOLD) ) // X Displacement
+							{
+									if (action.x < 0)
+									{ my_SendCommand_Function(0, 0, VK_RIGHT); } // TO RIGHT
+									else
+									{ my_SendCommand_Function(0, 0, VK_LEFT); } // TO LEFT
+							}
+
+
+							if ( (abs(action.y)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.x)<=MAX_DEVIATION_THRESHOLD) ) // Y Displacement
+							{
+									if (action.y < 0)
+									{
+										EnumContext context;
+										EnumWindows( my_EnumWindowsProc, reinterpret_cast<LPARAM>(&context) );
+										if (context.current_counter > 0)
+										{
+											HWND wnd = context.wnd_monit_struct[context.current_counter - 1].hWnd;
+											if (IsIconic(wnd)) { ShowWindow(wnd, SW_RESTORE); }
+											else { ShowWindow(wnd, SW_SHOW); }
+											SetForegroundWindow(wnd);
+										}
+
+									}
+									else
+									{ my_SendCommand_Function(VK_CONTROL, VK_TAB, 0); } // TO DOWNSIDE
+							}
+
+							if ( (abs(action.x)<=MAX_REMAPLESS_DISPLACEMENT)  &&  (abs(action.y)<=MAX_REMAPLESS_DISPLACEMENT) )
+							{
+									INPUT inputs[2] = {};
+									inputs[0].type = INPUT_MOUSE; inputs[0].mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+									inputs[1].type = INPUT_MOUSE; inputs[1].mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+									SendInput( 2 , inputs , sizeof(INPUT) );
+							}
+
+
+				}
+
+
+				// MIDDLE MOUSE BUTTON
+				if (action.which_button == "Middle")
+				{
+
+
+							my_ShowDisplacement_Function( "x " + action.which_button, action.x, action.y);
+
+							if ( (abs(action.x)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.y)<=MAX_DEVIATION_THRESHOLD) ) // X Displacement
+							{
+									if (action.x < 0)
+									{ my_SendCommand_Function(VK_LWIN, VK_CONTROL, VK_RIGHT); } // TO RIGHT
+									else
+									{ my_SendCommand_Function(VK_LWIN, VK_CONTROL, VK_LEFT); } // TO LEFT
+							}
+
+
+							if ( (abs(action.y)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.x)<=MAX_DEVIATION_THRESHOLD) ) // Y Displacement
+							{
+									if (action.y < 0)
+									{ my_SendCommand_Function(VK_LWIN, 0, VK_TAB); } // TO UPSIDE
+									else
+									{ my_SendCommand_Function(VK_LWIN, 0, 'M'); } // TO DOWNSIDE
+							}
+
+							if ( (abs(action.x)<=MAX_REMAPLESS_DISPLACEMENT)  &&  (abs(action.y)<=MAX_REMAPLESS_DISPLACEMENT) )
+							{
+									INPUT inputs[2] = {};
+									inputs[0].type = INPUT_MOUSE; inputs[0].mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
+									inputs[1].type = INPUT_MOUSE; inputs[1].mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
+									SendInput( 2 , inputs , sizeof(INPUT) );
+							}
+
+				}
+
+
+
+	}
+
+}

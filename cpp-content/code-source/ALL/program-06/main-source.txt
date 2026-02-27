@@ -1,0 +1,32 @@
+
+  // LESRO PROGRAM : D.U.S.K.L.P - Delete [ US_QWERTY ] Keyboard Layout Program
+  // Annotation: 
+
+#include <windows.h>
+#include <iostream>
+
+
+
+
+
+
+
+int main ()
+{
+
+	HKL hKlUS= LoadKeyboardLayoutA( "00000409" , KLF_NOTELLSHELL);
+
+	if (hKlUS != NULL)
+	{
+
+		if (UnloadKeyboardLayout(hKlUS))
+		{ std::cout << "\n Congratulations! Your attempt to exclude the [ US _	qwerty ] keyboard layout has succeeded!" << std::endl; }
+		else
+		{ std::cerr << "\n Attention! Your attempt to exclude the [ US _ qwerty ] keyboard layout has failed! Error Code: " << GetLastError() << "\n\n"; system("pause"); }
+
+	}
+
+
+
+	return 0;
+}

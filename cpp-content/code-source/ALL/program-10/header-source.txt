@@ -9,6 +9,8 @@
 #include <condition_variable>
 
 #include <iomanip>
+#include <atomic>
+#include <chrono>
 #include <vector>
 #include <string>
 #include <thread>
@@ -19,7 +21,6 @@
 
 
 // MY TYPE DATA
-
 	struct mouseAction
 	{
 		int x = 0;
@@ -27,46 +28,30 @@
 		std::string which_button;
 	};
 
-	struct Window_Monitor_Info
-	{
-		int z_position = 0;
-		HWND hWnd;
-	};
-
 	struct EnumContext
 	{
-		std::vector<Window_Monitor_Info> wnd_monit_struct;
+		std::vector<HWND> hWnd;
 		int current_counter = 0;
 	};
 
 // GLOBAL VARIABLES
-
 	HWND global_Main_hWnd;
-	HWND global_Menu_hWnd;
-	HINSTANCE global_Menu_hInstance = GetModuleHandle(NULL);
 	HHOOK global_hHook;
 	const wchar_t global_Menu_ClassName[] = L"Um Nome de Classe de Janela do Bagulho!";
 
 	// WORKER THREAD VARIABLES
-		
 			std::queue<mouseAction> actionQueue;
 			std::mutex queueMutex;
 			std::condition_variable queueCV;
 
 	POINT init_Cursor;
 	bool will_Allow_MouseRemapping = true;
-
-// GLOBAL VARIABLES
-
+	bool will_Allow_DrawingMode = false;
+	bool is_MiddleMouseButton_Pressed = false;
+	
+// PROTOTYPES
 	void my_ShowDisplacement_Function( std::string , int , int );
 	void my_SendCommand_Function( UINT , UINT , UINT );
-
-
-
-
-
-
-
 
 
 
@@ -83,11 +68,14 @@ void my_ShowProgramStatus_Function( BOOL success , const char which_action[], co
 	{
 		std::cout << "\n  Your attempt to " << which_action << " the [ " << which_piece << " ] has succeeded!";
 	}
+	/*
 	else
 	{
+		Beep(950, 80);
 		std::cerr << "\n | Your attempt to " << which_action << " the [ " << which_piece << " ] has failed! Error Code: " << GetLastError() << std::endl;
 		std::cout << "\n | ._.) - Sorry, It's not me, it's probably you! "; system("pause");
 	}
+	*/
 
 }
 
@@ -120,23 +108,10 @@ BOOL CALLBACK my_EnumWindowsProc(HWND hWnd, LPARAM lParam)
 	// Configuração
 	EnumContext* context = reinterpret_cast<EnumContext*>(lParam);
 	context->current_counter++;
-	Window_Monitor_Info W_M_I;
-
-	W_M_I.z_position = context->current_counter;
-
-	W_M_I.hWnd = hWnd;
-
-	context->wnd_monit_struct.push_back(W_M_I);
+	context->hWnd.push_back(hWnd);
 	return TRUE;
 
 }
-
-
-
-
-
-
-
 
 
 
@@ -173,34 +148,55 @@ void my_WorkerThread_Function ()
 
 							my_ShowDisplacement_Function( "> " + action.which_button, action.x, action.y);
 
-							if ( (abs(action.x)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.y)<=MAX_DEVIATION_THRESHOLD) ) // X Displacement
+							// X Displacement
+							if ( (abs(action.x)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.y)<=MAX_DEVIATION_THRESHOLD) )
 							{
+									// TO RIGHT
 									if (action.x < 0)
-									{ my_SendCommand_Function(0, 0, VK_RIGHT); } // TO RIGHT
+									{ my_SendCommand_Function(VK_MENU, 0, VK_RIGHT); }
+
+
+									// TO LEFT
 									else
-									{ my_SendCommand_Function(0, 0, VK_LEFT); } // TO LEFT
+									{ my_SendCommand_Function(VK_MENU, 0, VK_LEFT); }
 							}
 
-
-							if ( (abs(action.y)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.x)<=MAX_DEVIATION_THRESHOLD) ) // Y Displacement
+							// Y Displacement
+							if ( (abs(action.y)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.x)<=MAX_DEVIATION_THRESHOLD) )
 							{
+
+									// TO UPSIDE
 									if (action.y < 0)
 									{
-										EnumContext context;
-										EnumWindows( my_EnumWindowsProc, reinterpret_cast<LPARAM>(&context) );
-										if (context.current_counter > 0)
-										{
-											HWND wnd = context.wnd_monit_struct[context.current_counter - 1].hWnd;
-											if (IsIconic(wnd)) { ShowWindow(wnd, SW_RESTORE); }
-											else { ShowWindow(wnd, SW_SHOW); }
-											SetForegroundWindow(wnd);
-										}
-
+											EnumContext context;
+											EnumWindows( my_EnumWindowsProc, reinterpret_cast<LPARAM>(&context) );
+											if (context.current_counter > 0)
+											{
+												HWND wnd = context.hWnd[context.current_counter - 1];
+												if (IsIconic(wnd)) { ShowWindow(wnd, SW_RESTORE); }
+												else { ShowWindow(wnd, SW_SHOW); }
+												SetForegroundWindow(wnd);
+											}
 									}
+
+									// TO DOWNSIDE
 									else
-									{ my_SendCommand_Function(VK_CONTROL, VK_TAB, 0); } // TO DOWNSIDE
+									{
+											EnumContext context;
+											EnumWindows(my_EnumWindowsProc, reinterpret_cast<LPARAM> (&context));
+											if (context.current_counter > 0)
+											{
+												if ((GetForegroundWindow()) != context.hWnd[0])
+												{
+													SetForegroundWindow(context.hWnd[0]);
+												}
+											}
+											my_SendCommand_Function(VK_CONTROL, 0, VK_TAB);
+									}
+
 							}
 
+							// No Displacement
 							if ( (abs(action.x)<=MAX_REMAPLESS_DISPLACEMENT)  &&  (abs(action.y)<=MAX_REMAPLESS_DISPLACEMENT) )
 							{
 									INPUT inputs[2] = {};
@@ -220,23 +216,43 @@ void my_WorkerThread_Function ()
 
 							my_ShowDisplacement_Function( "x " + action.which_button, action.x, action.y);
 
-							if ( (abs(action.x)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.y)<=MAX_DEVIATION_THRESHOLD) ) // X Displacement
+							// X Displacement
+							if ( (abs(action.x)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.y)<=MAX_DEVIATION_THRESHOLD) )
 							{
+									// TO RIGHT
 									if (action.x < 0)
-									{ my_SendCommand_Function(VK_LWIN, VK_CONTROL, VK_RIGHT); } // TO RIGHT
+									{ my_SendCommand_Function(VK_LWIN, VK_CONTROL, VK_RIGHT); }
+
+
+									// TO LEFT
 									else
-									{ my_SendCommand_Function(VK_LWIN, VK_CONTROL, VK_LEFT); } // TO LEFT
+									{ my_SendCommand_Function(VK_LWIN, VK_CONTROL, VK_LEFT); }
 							}
 
-
-							if ( (abs(action.y)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.x)<=MAX_DEVIATION_THRESHOLD) ) // Y Displacement
+							// Y Displacement
+							if ( (abs(action.y)>MIN_DISPLACEMENT_DRAG)  &&  (abs(action.x)<=MAX_DEVIATION_THRESHOLD) )
 							{
+									// TO UPSIDE
 									if (action.y < 0)
-									{ my_SendCommand_Function(VK_LWIN, 0, VK_TAB); } // TO UPSIDE
+									{ my_SendCommand_Function(VK_LWIN, 0, VK_TAB); }
+
+
+									// TO DOWNSIDE
 									else
-									{ my_SendCommand_Function(VK_LWIN, 0, 'M'); } // TO DOWNSIDE
+									{
+											EnumContext context;
+											EnumWindows(my_EnumWindowsProc,reinterpret_cast<LPARAM>(&context));
+											if (context.current_counter > 0)
+											{
+												for ( int i = 0 ; i < context.current_counter ; i++ )
+												{
+													ShowWindow( context.hWnd[i] , SW_MINIMIZE );
+												}
+											}
+									}
 							}
 
+							// No Diplacement
 							if ( (abs(action.x)<=MAX_REMAPLESS_DISPLACEMENT)  &&  (abs(action.y)<=MAX_REMAPLESS_DISPLACEMENT) )
 							{
 									INPUT inputs[2] = {};
@@ -244,6 +260,7 @@ void my_WorkerThread_Function ()
 									inputs[1].type = INPUT_MOUSE; inputs[1].mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
 									SendInput( 2 , inputs , sizeof(INPUT) );
 							}
+
 
 				}
 

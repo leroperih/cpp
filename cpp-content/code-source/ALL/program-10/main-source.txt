@@ -1,6 +1,7 @@
 
-// LESRO PROGRAM _ My Remapper Program For Desktop Navigation (v02.0)
-// Annotation: Doideira.
+
+  // LESRO PROGRAM | R.P.D.N. - Remapper Program For Desktop Navigation (v02.0)
+  // Annotation: Doideira.
 
 
 #include "header-source.h"
@@ -18,55 +19,76 @@ BOOL my_CreateWindow_Function();
 
 
 
+
+
 // ENTRY POINT
 int main ()
 {
 
 	std::cout << "\n  You can search for things to watch in portuguese, english or german,";
-	std::cout << "\n  stop watching shits like internet drama." << std::endl;
+	std::cout << "\n  stop watching shits like internet drama.";
+	std::cout << "\n _____________________________________________________________________________" << std::endl;
 
 	// HIDDEN WINDOW
 	if (!my_CreateWindow_Function())
 	{
-		my_ShowProgramStatus_Function(ATTEMPT_FAILED, "create", "Hidden Window");
-		return 1;
+			my_ShowProgramStatus_Function(ATTEMPT_FAILED, "create", "Hidden Window");
+			return 1;
 	}
-	else { my_ShowProgramStatus_Function(ATTEMPT_SUCCEEDED, "create", "Hidden Window"); }
 
-	// HOTKEY
+	// HOTKEY #01
 	if (!RegisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING, MOD_CONTROL | MOD_SHIFT, VK_F1))
 	{
-		DestroyWindow(global_Main_hWnd);
-		my_ShowProgramStatus_Function(ATTEMPT_FAILED, "register", "HotKey #01");
-		return 1;
+			DestroyWindow(global_Main_hWnd);
+			my_ShowProgramStatus_Function(ATTEMPT_FAILED, "register", "HotKey #01");
+			return 1;
 	}
-	else { my_ShowProgramStatus_Function(ATTEMPT_SUCCEEDED, "register", "HotKey #01"); }
 
-	std::thread t(my_WorkerThread_Function);
-	t.detach();
+	// HOTKEY #02
+	if (!RegisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACTIVATE_ARTMODE, MOD_CONTROL | MOD_SHIFT, VK_F2))
+	{
+			UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
+			DestroyWindow(global_Main_hWnd);
+			my_ShowProgramStatus_Function(ATTEMPT_FAILED, "register", "HotKey #02");
+			return 1;
+	}
+
+	// HOTKEY #03
+	if (!RegisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_WINDOWS_CLOSE, MOD_CONTROL | MOD_SHIFT | MOD_ALT, VK_F12))
+	{
+			UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACTIVATE_ARTMODE);
+			UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
+			DestroyWindow(global_Main_hWnd);
+			my_ShowProgramStatus_Function(ATTEMPT_FAILED, "register", "HotKey #02");
+			return 1;
+	}
+
+			std::thread t(my_WorkerThread_Function);
+			t.detach();
 
 	// MOUSE HOOK
 	if (!(global_hHook = SetWindowsHookExW(WH_MOUSE_LL, HookProcedure, GetModuleHandle(NULL), NULL)))
 	{
-		UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
-		DestroyWindow(global_Main_hWnd);
-		my_ShowProgramStatus_Function(ATTEMPT_FAILED, "create", "Mouse Hook");
-		return 1;
+			UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_WINDOWS_CLOSE);
+			UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACTIVATE_ARTMODE);
+			UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
+			DestroyWindow(global_Main_hWnd);
+			my_ShowProgramStatus_Function(ATTEMPT_FAILED, "create", "Mouse Hook");
+			return 1;
 	}
-	else { my_ShowProgramStatus_Function(ATTEMPT_SUCCEEDED, "create", "Mouse Hook"); }
-
-	std::cout << "\n\n";
 
 	// MESSAGE LOOP
 	MSG msg = {};
 	while ( GetMessage(&msg, NULL, 0, 0) != 0)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
 	}
 
 	// It's All Folks
 	UnhookWindowsHookEx(global_hHook);
+	UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_WINDOWS_CLOSE);
+	UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACTIVATE_ARTMODE);
 	UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
 	DestroyWindow(global_Main_hWnd);
 	return 0;
@@ -105,7 +127,6 @@ BOOL my_CreateWindow_Function ()
 
 	global_Main_hWnd = local_hWnd;
 
-
 	if (local_hWnd == NULL)
 	{ return FALSE; }
 	else { return TRUE; }
@@ -119,8 +140,9 @@ BOOL my_CreateWindow_Function ()
 
 
 
+
 // SHOW DISPLACEMENT
-void my_ShowDisplacement_Function( std::string which_button , int x , int y )
+void my_ShowDisplacement_Function ( std::string which_button , int x , int y )
 {
 	std::cout << "\n | Displacement:  "
 		<< "[ Button = " << which_button << " ]  &  "
@@ -130,7 +152,7 @@ void my_ShowDisplacement_Function( std::string which_button , int x , int y )
 
 
 // SEND COMMAND
-void my_SendCommand_Function( UINT mod_01 , UINT mod_02 , UINT key_03 )
+void my_SendCommand_Function ( UINT mod_01 , UINT mod_02 , UINT key_03 )
 {
 
 	std::vector<INPUT> inputs(6);
@@ -163,7 +185,6 @@ void my_SendCommand_Function( UINT mod_01 , UINT mod_02 , UINT key_03 )
 
 
 
-
 // HOTKEY AND WINDOW PROCEDURE
 LRESULT CALLBACK WindowProcedure (HWND Wnd_Handle, UINT Wnd_Msg, WPARAM wParam, LPARAM lParam)
 {
@@ -178,9 +199,29 @@ LRESULT CALLBACK WindowProcedure (HWND Wnd_Handle, UINT Wnd_Msg, WPARAM wParam, 
 						{
 
 							will_Allow_MouseRemapping = !will_Allow_MouseRemapping;
-							std::cout << "\n | Modificated: The remapping logic of the program was " << ( will_Allow_MouseRemapping ? "turned on" : "turned off" ) << std::endl;
-
+							std::cout << "\n | Modificated: The remapping logic of the program was turned " << ( will_Allow_MouseRemapping ? "on" : "off" ) << std::endl;
 							
+						}
+
+
+						if (wParam == HOTKEY_CODEMSG_ACTIVATE_ARTMODE)
+						{
+
+							will_Allow_DrawingMode = !will_Allow_DrawingMode;
+							std::cout << "\n | Modificated: The Drawing Mode was turned " << (will_Allow_DrawingMode ? "on" : "off") << std::endl;
+
+						}
+
+
+						if (wParam == HOTKEY_CODEMSG_WINDOWS_CLOSE)
+						{
+
+								{
+									std::lock_guard<std::mutex> lock(queueMutex);
+									actionQueue.push({ (0) , (500) , "Middle" });
+								}
+								queueCV.notify_one();
+
 						}
 
 
@@ -196,7 +237,7 @@ LRESULT CALLBACK WindowProcedure (HWND Wnd_Handle, UINT Wnd_Msg, WPARAM wParam, 
 
 
 // HOOK PROCEDURE
-LRESULT CALLBACK HookProcedure(int Hook_Msg, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK HookProcedure ( int Hook_Msg, WPARAM wParam, LPARAM lParam )
 {
 
 	if ( Hook_Msg >= 0 )
@@ -208,12 +249,13 @@ LRESULT CALLBACK HookProcedure(int Hook_Msg, WPARAM wParam, LPARAM lParam)
 
 
 
+
+
 		if (will_Allow_MouseRemapping)
 		{
 
 
 					MSLLHOOKSTRUCT* pMouseStruct = reinterpret_cast<MSLLHOOKSTRUCT*> (lParam);
-
 
 
 

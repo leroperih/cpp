@@ -1,0 +1,34 @@
+
+
+
+#include <windows.h>
+#include <iostream>
+#include <vector>
+
+
+
+void main() {
+    // 1. Get the number of layouts
+    int numLayouts = GetKeyboardLayoutList(0, NULL);
+    std::vector<HKL> layouts(numLayouts);
+
+    // 2. Fill the buffer with active layout handles
+    GetKeyboardLayoutList(numLayouts, layouts.data());
+
+    for (HKL hkl : layouts) {
+        char name[KL_NAMELENGTH];
+        // Temporarily activate to get its name if necessary, 
+        // or just check the handle directly if you have the exact HKL.
+        // For simplicity, we check if it matches the US English ID (0x0409)
+        if (LOWORD((UINT_PTR)hkl) == 0x0409) {
+            if (UnloadKeyboardLayout(hkl)) {
+                std::cout << "English (US) layout removed successfully." << std::endl;
+            }
+            else {
+                std::cerr << "Failed to remove English (US). It might be the default." << std::endl;
+            }
+        }
+    }
+
+}
+

@@ -304,6 +304,7 @@
     main
     {
         padding: 0em 1em;
+        min-height: 50em;
     }
 
     main > *

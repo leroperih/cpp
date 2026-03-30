@@ -1,36 +1,42 @@
 
 
 // GLOBAL VARIABLES
+
     const personal_project_area = document.getElementById('personal-projects-area');
 
-    // Replace these with your info
-    const USER = 'leroperih';
-    const REPO = 'cpp';
+
+
+
+
 
 // CODES
-    async function loadProjects() {
 
-        // We fetch the contents of your specific folders from GitHub
-        const url_directx = `https://api.github.com${USER}/${REPO}/cpp-content/code-source/ALL/directx`;
-        const url_windows = `https://api.github.com${USER}/${REPO}/cpp-content/code-source/ALL/windows`;
+    async function loadProjects()
+    {
+        try
+        {
 
-        try {
-            const [resDX, resWin] = await Promise.all([fetch(url_directx), fetch(url_windows)]);
-            const dataDX = await resDX.json();
-            const dataWin = await resWin.json();
+            // Se estiverem na mesma pasta, use apenas o nome do arquivo
+            const response = await fetch('projects.json'); 
+        
+            if (!response.ok) throw new Error("Não achei o JSON!");
 
-            // Filter for items that are 'dir' (directories)
-            const countDX = dataDX.filter(item => item.type === 'dir').length;
-            const countWin = dataWin.filter(item => item.type === 'dir').length;
+            const dados = await response.json();
 
+            // Aqui você pega os valores que definiu dentro do seu JSON
+            const countDX = dados.directx;
+            const countWin = dados.windows;
             const totalFolders = countDX + countWin;
 
-            // Create the elements
-            for (let i = 0; i < totalFolders; i++) {
+            personal_project_area.innerHTML = "";
+
+            for ( let i = 0 ; i < totalFolders ; i++)
+            {
                 personal_project_area.innerHTML += "<p>Project Link Placeholder</p>";
             }
+
         } catch (error) {
-            console.error("Error fetching from GitHub:", error);
+            console.error("Erro ao carregar o arquivo local:", error);
         }
     }
 

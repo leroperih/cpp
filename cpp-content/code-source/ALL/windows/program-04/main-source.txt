@@ -48,14 +48,14 @@ int main()
 	int opt = 0;
 	std::vector<WhichGame> context;
 
-	context.push_back( { ++games_counter , "Chess"         , L"Chess.com"          , L"https://www.chess.com/de"} );
-	context.push_back( { ++games_counter , "Typing"        , L"Typing Test"        , L"https://www.typing.com/student/tests"} );
-	context.push_back( { ++games_counter , "Apple Game"    , L"Fruit Box"          , L"https://en.gamesaien.com/game/fruit_box/"} );
-	context.push_back( { ++games_counter , "Sudoku"        , L"Extrem Sudoku"      , L"https://sudoku.com/de/extreme/"} );
-	context.push_back( { ++games_counter , "Caca Palavras" , L"Caça Palavras"      , L"https://rachacuca.com.br/palavras/caca-palavras/"} );
-	context.push_back( { ++games_counter , "Jogo da Forca" , L"Jogo da Forca"      , L"https://rachacuca.com.br/palavras/jogo-da-forca/"} );
-	context.push_back( { ++games_counter , "Quebra Cabeca" , L"Quebra Cabeça"      , L"https://rachacuca.com.br/raciocinio/quebra-cabeca/"} );
-	context.push_back( { ++games_counter , "Mathe Lernen"  , L"mathe-lernen.net"   , L"https://mathe-lernen.net/" } );
+	context.push_back({ ++games_counter , "Chess"         , L"Chess.com"          , L"https://www.chess.com/de" });
+	context.push_back({ ++games_counter , "Typing"        , L"Typing Test"        , L"https://www.typing.com/student/tests" });
+	context.push_back({ ++games_counter , "Apple Game"    , L"Fruit Box"          , L"https://en.gamesaien.com/game/fruit_box/" });
+	context.push_back({ ++games_counter , "Sudoku"        , L"Extrem Sudoku"      , L"https://sudoku.com/de/extreme/" });
+	context.push_back({ ++games_counter , "Caca Palavras" , L"Caça Palavras"      , L"https://rachacuca.com.br/palavras/caca-palavras/" });
+	context.push_back({ ++games_counter , "Jogo da Forca" , L"Jogo da Forca"      , L"https://rachacuca.com.br/palavras/jogo-da-forca/" });
+	context.push_back({ ++games_counter , "Quebra Cabeca" , L"Quebra Cabeça"      , L"https://rachacuca.com.br/raciocinio/quebra-cabeca/" });
+	context.push_back({ ++games_counter , "Mathe Lernen"  , L"mathe-lernen.net"   , L"https://mathe-lernen.net/" });
 
 
 	do
@@ -63,7 +63,7 @@ int main()
 
 		std::cout << "\n | Choose a activity to realize:\n" << std::endl;
 
-		for ( int i = 0 ; i < context.size() ; i++ )
+		for (int i = 0; i < context.size(); i++)
 		{
 			std::cout << "   [" << i + 1 << "] " << context[i].game_name << std::endl;
 		}
@@ -86,8 +86,8 @@ int main()
 
 
 
-	std::wstring link = L" --incognito --new-window --directory-profile=\"Profile 1\" \"" + context[opt - 1].link_Game + L"\"" ;
-	ShellExecute( NULL , L"open" , L"chrome.exe" , link.c_str() , NULL , SW_SHOWNORMAL );
+	std::wstring link = L" --incognito --new-window --directory-profile=\"Profile 1\" \"" + context[opt - 1].link_Game + L"\"";
+	ShellExecute(NULL, L"open", L"chrome.exe", link.c_str(), NULL, SW_SHOWNORMAL);
 
 
 	std::wstring Wnd_Title;

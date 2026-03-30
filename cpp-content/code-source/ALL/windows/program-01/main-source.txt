@@ -1,0 +1,33 @@
+
+// LESRO PROGRAM : D.U.L - Delete US Layout
+// Annotation: Doideiras
+
+#include <windows.h>
+#include <iostream>
+
+
+
+
+
+
+
+int main()
+{
+
+	HKL hKlUS = LoadKeyboardLayoutA("00000409", KLF_NOTELLSHELL);
+
+	if (hKlUS != NULL)
+	{
+
+		
+		if (!UnloadKeyboardLayout(hKlUS))
+		{
+			std::cerr << "\n Attention! Your attempt to exclude the [ US _ qwerty ] keyboard layout has failed! Error Code: " << GetLastError() << "\n\n"; system("pause");
+		}
+
+	}
+
+
+
+	return 0;
+}

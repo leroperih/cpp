@@ -38,4 +38,6 @@
         }
     }
 
+    loadProjects();
+
     personal_project_area.innerHTML += "<p>The javascript is working</p>";

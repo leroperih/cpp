@@ -24,13 +24,11 @@
             const dados = await response.json();
 
             // Aqui você pega os valores que definiu dentro do seu JSON
-            const countDX = dados.directx;
-            const countWin = dados.windows;
-            const totalFolders = countDX + countWin;
+            let countDX = dados.directx;
+            let countWin = dados.windows;
+            let totalFolders = countDX + countWin;
 
-            personal_project_area.innerHTML = "";
-
-            for ( let i = 0 ; i < totalFolders ; i++)
+            for ( let i = 0 ; i < 5 ; i++ )
             {
                 personal_project_area.innerHTML += "<p>Project Link Placeholder</p>";
             }
@@ -40,4 +38,4 @@
         }
     }
 
-    console.log("the javascript is working");
+    personal_project_area.innerHTML += "<p>The javascript is working</p>";

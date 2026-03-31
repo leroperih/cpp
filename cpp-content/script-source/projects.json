@@ -1,4 +1,69 @@
 {
-  "directx_count": 5,
-  "windows_count": 3
+  "project": [
+
+    {
+      "title": "Win #01 _ Delete US Keyboard Layout",
+      "text": "A Program that Deletes the US keyboad layout every time the Windows restores it.",
+      "tech": "Win32",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-01"
+    },
+
+    {
+      "title": "Win #02 _ Save Youtube Playlists",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-02"
+    },
+
+    {
+      "title": "Win #03 _ Open Chrome Split View",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-03"
+    },
+
+    {
+      "title": "Win #04 _ Open Online Games",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-04"
+    },
+
+    {
+      "title": "Win #05 _ Listing Mouse Devices Connected",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-05"
+    },
+
+    {
+      "title": "Win #06 _ Get Mouse Cursor Position",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-06"
+    },
+
+    {
+      "title": "Win #10 _ Mouse Program For Desktop Navigation",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-10"
+    },
+
+    {
+      "title": "DX #05 _ Projeto DirectX Engine",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "cpp-content/code-source/visualize-source-code.html?type=directx&file=program-05"
+    }
+
+  ]
 }

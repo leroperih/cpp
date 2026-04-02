@@ -1,0 +1,12 @@
+
+@charset "UTF-8";
+
+
+:root
+{
+    --study-color-01: var(--color-study-cpp-01);
+    --study-color-02: var(--color-study-cpp-02);
+    --study-color-03: var(--color-study-cpp-03);
+}
+
+

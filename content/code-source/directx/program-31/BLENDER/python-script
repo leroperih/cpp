@@ -1,0 +1,85 @@
+import bpy
+
+def export_triangulated_perfect_dx11(obj_filepath, transform_filepath):
+    # Salva a seleção original da cena
+    original_selected = bpy.context.selected_objects.copy()
+    original_active = bpy.context.view_layer.objects.active
+    
+    bpy.ops.object.select_all(action='DESELECT')
+    
+    vis_objects = []
+    col_objects = []
+    
+    if "vis-map" in bpy.data.collections:
+        vis_objects = [obj for obj in bpy.data.collections["vis-map"].objects if obj.type == 'MESH']
+    if "col-map" in bpy.data.collections:
+        col_objects = [obj for obj in bpy.data.collections["col-map"].objects if obj.type == 'MESH']
+        
+    # 1. Exportar arquivo de transformações (.txt) baseado nas posições reais da cena
+    with open(transform_filepath, 'w') as f:
+        for obj in col_objects:
+            name = obj.name.lower()
+            obj_type = "UNKNOWN"
+            if name.startswith("floor") or "rampa" in name:
+                obj_type = "FLOOR"
+            elif name.startswith("wall"):
+                obj_type = "WALL"
+            
+            pos = obj.location
+            rot = obj.rotation_mode
+            quat = obj.rotation_euler.to_quaternion() if rot == 'XYZ' else obj.rotation_quaternion
+            
+            f.write(f"{obj_type} {obj.name} {pos.x} {pos.y} {pos.z} {quat.x} {quat.y} {quat.z} {quat.w}\n")
+            
+    # 2. Criar clones temporários e aplicar modificador de Triangulação
+    temp_copies = []
+    
+    all_target_objects = vis_objects + col_objects
+    
+    for obj in all_target_objects:
+        # Cria uma cópia da malha para não destruir o seu modelo original
+        mesh_copy = obj.copy()
+        mesh_copy.data = obj.data.copy()
+        
+        # Vincula a cópia temporária na coleção ativa da cena
+        bpy.context.collection.objects.link(mesh_copy)
+        temp_copies.append(mesh_copy)
+        
+        # Garante a seleção apenas da cópia para o exportador ler
+        mesh_copy.select_set(True)
+        bpy.context.view_layer.objects.active = mesh_copy
+        
+        # Adiciona e aplica o modificador de triangulação nativo
+        mod = mesh_copy.modifiers.new(name="Triangulate", type='TRIANGULATE')
+        mod.quad_method = 'BEAUTY'
+        mod.ngon_method = 'BEAUTY'
+        
+        # Força o Blender a computar o modificador na malha final
+        bpy.ops.object.modifier_apply(modifier=mod.name)
+
+    # 3. Executa a exportação do arquivo .obj com os eixos corretos do Blender 4.x+
+    bpy.ops.wm.obj_export(
+        filepath=obj_filepath,
+        export_selected_objects=True,
+        export_materials=False,
+        export_colors=False,
+        forward_axis='Z',
+        up_axis='Y'
+    )
+    
+    # 4. Limpeza rigorosa: deleta todas as cópias trianguladas temporárias da cena
+    bpy.ops.object.delete()
+    
+    # Restaura o estado de seleção original do seu arquivo .blend
+    for obj in original_selected:
+        try:
+            obj.select_set(True)
+        except:
+            pass
+    bpy.context.view_layer.objects.active = original_active
+
+# Execute usando o prefixo 'r' para caminhos do Windows
+export_triangulated_perfect_dx11(
+    r"C:\Users\qgwol\OneDrive\Documentos\BLENDER\mapa-detalhado.obj", 
+    r"C:\Users\qgwol\OneDrive\Documentos\BLENDER\mapa-transforms.txt"
+)

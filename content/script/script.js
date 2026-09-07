@@ -10,7 +10,7 @@
     {
         try
         {
-            const response = await fetch("cpp-content/script-source/projects.json");
+            const response = await fetch("content/script/projects.json");
             if (!response.ok) throw new Error("The JSON file was not found!");
 
             const dados = await response.json();

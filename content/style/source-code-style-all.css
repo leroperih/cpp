@@ -44,44 +44,18 @@ header {
         align-items: flex-start;
         gap: 1.5em;
         max-width: 64em;
-        margin: auto;
-        padding: 0em 1em;
+        margin-left: 1em;
     }
 
-        header > div > h1 {
-            font-size: 1.8em;
-        }
-
-
-
-div#container-back, div#container-back * {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 100%;
-    height: 100%;
-    transition-duration: 0.15s;
-}
-
-div#container-back {
-    height: var(--header-content-size);
-    width: var(--header-content-size);
-    border-radius: 50%;
-    border: 2px solid var(--color-medium-black-01);
-}
-
-    /* Hover */
-
-
-    div#container-back:hover > a, div#container-back:hover > div {
-        width: 90%;
-        height: 90%;
+    header > div > h1 {
+        font-size: 1.8em;
     }
 
-    div#container-back:hover {
-        background: var(--hover-color-01);
-        box-shadow: 0em 0em 0.25em var(--hover-color-01);
+    div.icon
+    {
+        padding: 0em !important;
+        border-radius: 50% !important;
+        width: var(--size-icons);
     }
 
 
@@ -101,40 +75,37 @@ main {
         margin: 1.5em auto;
     }
 
-    main > div {
+    div.two-sides-structure-content > div {
         box-sizing: border-box;
-        background-color: var(--color-lighter-white-01);
         border-radius: 0.75em;
         border: 0.05em solid var(--color-dark-grey-01);
-        padding: 0em 2em;
+        padding-left: 1.5em;
         margin: 1.5em auto;
     }
 
-        main > div > input.unico {
-            min-width: 6em;
-            padding: 0.5em 1em;
-            font-size: 1.75em;
-            margin: 0.75em;
-        }
+    main > div > input.unico {
+        min-width: 6em;
+        padding: 0.5em 1em;
+        font-size: 1.75em;
+        margin: 0.75em;
+    }
 
-        main > div#git-desf {
-            padding: 0em 1em;
-        }
+    main > div#git-desf {
+        padding: 0em 1em;
+    }
 
-            main > div#git-desf > * {
-                margin: 0.8em 0em;
-            }
+    main > div#git-desf > * {
+        margin: 0.8em 0em;
+    }
 
-        main > div.code > code {
-            margin: 0.5em 0em;
-        }
-
-        main > div.code {
-            overflow: hidden;
-            padding: 0em;
-            background-color: var(--color-medium-black-01);
-            border: 0.05em solid var(--color-darkest-black-02);
-        }
+    div.iframe-source-code
+    {
+        overflow: hidden;
+        padding: 0em;
+        padding-left: 1em;
+        background-color: #121212;
+        border: 0.05em solid var(--color-darkest-black-02);
+    }
 
     main * {
         color: var(--color-darkest-black-01);
@@ -284,19 +255,6 @@ h2.file-title {
 
 
 
-/*
-    div#personal-projects-area > * , div#personal-projects-menu > *
-    {
-        margin: 2em auto;
-    }
-
-    div#personal-projects-menu > div#personal-menu
-    {
-        background-color: var(--color-dark-grey-02);
-    }
-    */
-
-
 
 
 
@@ -307,8 +265,6 @@ footer {
     display: flex;
     justify-content: space-between;
     padding: 0em 2em;
-    position: absolute;
-    bottom: 0em;
     width: 100%;
     height: 8em;
     background-color: var(--color-medium-black-02);

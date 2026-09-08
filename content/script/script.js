@@ -1,6 +1,6 @@
 
     // GLOBAL VARIABLES
-    const personal_project_area = document.getElementById('personal-projects-area');
+    const personal_project_area = document.querySelector('div.two-sides-structure-content');
 
 
 
@@ -15,7 +15,7 @@
 
             const dados = await response.json();
 
-            // Função que gera o HTML
+            // Funï¿½ï¿½o que gera o HTML
             const createProjectHTML = (project) => `
                 <div class="container-study"> 
                     <div> <h2 class="study">${project.title}</h2> </div> 

@@ -6,7 +6,7 @@
       "text": "A Program that Deletes the US keyboad layout every time the Windows restores it.",
       "tech": "Win32",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-01"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=01"
     },
 
     {
@@ -14,7 +14,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-02"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=02"
     },
 
     {
@@ -22,7 +22,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-03"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=03"
     },
 
     {
@@ -30,7 +30,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-04"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=04"
     },
 
     {
@@ -38,7 +38,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-05"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=05"
     },
 
     {
@@ -46,7 +46,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-06"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=06"
     },
 
     {
@@ -54,7 +54,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=windows&file=program-10"
+      "link": "pag-cpp-view-source-code.html?folder=win&file=10"
     },
 
     {
@@ -62,7 +62,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "cpp-content/code-source/visualize-source-code.html?type=directx&file=program-05"
+      "link": "pag-cpp-view-source-code.html?folder=dx&file=05"
     }
 
   ]

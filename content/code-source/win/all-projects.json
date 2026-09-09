@@ -7,6 +7,11 @@
     },
     {
       "folder": "03"
+    },
+    {
+      "folder": "10",
+      "file-01": "main-source.cpp",
+      "file-02": "header-source.h"
     }
   ]
 }

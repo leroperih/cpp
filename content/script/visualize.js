@@ -22,7 +22,7 @@ const iframe_Element = `
     }
 
     // Caminho para a pasta baseado na sua nova estrutura
-    const caminhoPasta = `content/code-source/${tipoPasta}/program-${numProjeto}`;
+    const caminhoPasta = `content/code-source/${tipoPasta}/`;
 
     try {
         // Busca o arquivo files.json dentro da pasta
@@ -41,7 +41,7 @@ const iframe_Element = `
                 <div class="code-block" style="margin-bottom: 30px;">
                     <h2 class="file-title"> ${nomeArquivoOriginal} </h2>
                     <div class="code">
-                        <iframe src="${caminhoPasta}/${nomeArquivoOriginal}" frameborder="0" class="show-code"></iframe>
+                        <iframe src="${caminhoPasta}/program-${numProjeto}/${nomeArquivoOriginal}" frameborder="0" class="show-code"></iframe>
                     </div>
                 </div>
             `;

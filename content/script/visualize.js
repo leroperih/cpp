@@ -26,7 +26,7 @@ const iframe_Element = `
 
     try {
         // Busca o arquivo files.json dentro da pasta
-        const resposta = await fetch(`${caminhoPasta}/files.json`);
+        const resposta = await fetch(`${caminhoPasta}/all-projects.json`);
         const dados = await resposta.json();
         
         const chavesDeArquivos = Object.keys(dados).filter(chave => chave.startsWith('file-'));

@@ -58,11 +58,27 @@
     },
 
     {
+      "title": "DX #04 _ Projeto DirectX Engine",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "pag-cpp-view-source-code.html?folder=dx&project=04"
+    },
+
+    {
       "title": "DX #05 _ Projeto DirectX Engine",
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
       "link": "pag-cpp-view-source-code.html?folder=dx&project=05"
+    },
+
+    {
+      "title": "DX #06 _ Projeto DirectX Engine",
+      "text": "Just a Strange Text.",
+      "tech": "DirectX, C++",
+      "size": "Small",
+      "link": "pag-cpp-view-source-code.html?folder=dx&project=06"
     }
 
   ]

@@ -6,7 +6,7 @@
       "text": "A Program that Deletes the US keyboad layout every time the Windows restores it.",
       "tech": "Win32",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=01"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=01"
     },
 
     {
@@ -14,7 +14,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=02"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=02"
     },
 
     {
@@ -22,7 +22,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=03"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=03"
     },
 
     {
@@ -30,7 +30,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=04"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=04"
     },
 
     {
@@ -38,7 +38,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=05"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=05"
     },
 
     {
@@ -46,7 +46,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=06"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=06"
     },
 
     {
@@ -54,7 +54,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=win&file=10"
+      "link": "pag-cpp-view-source-code.html?folder=win&project=10"
     },
 
     {
@@ -62,7 +62,7 @@
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",
       "size": "Small",
-      "link": "pag-cpp-view-source-code.html?folder=dx&file=05"
+      "link": "pag-cpp-view-source-code.html?folder=dx&project=05"
     }
 
   ]

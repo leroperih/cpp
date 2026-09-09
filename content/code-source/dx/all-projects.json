@@ -1,0 +1,18 @@
+{
+  "projects": [
+
+    {
+      "folder": "04",
+      "file-01": "Game.cpp",
+      "file-02": "Game.h"
+    },
+    {
+      "folder": "05",
+      "file-01": "main-source.cpp"
+    },
+    {
+      "folder": "06",
+      "file-01": "main-source.cpp"
+    }
+  ]
+}

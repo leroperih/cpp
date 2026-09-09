@@ -3,8 +3,6 @@
 const main_Element = document.querySelector('div.two-sides-structure-content');
 const which_iframe = "main-iframe";
 
-main_Element.innerHTML += "<div><h2>O script está funcionando perfeitamente!</h2></div>";
-
 // 2. Em vez de DOMContentLoaded, usamos uma IIFE Assíncrona:
 (async () => {
     console.log("A função começou a rodar com sucesso!");
@@ -46,11 +44,9 @@ main_Element.innerHTML += "<div><h2>O script está funcionando perfeitamente!</h
 
             // Monta o caminho final: content/code-source/win/program-02/main-source.cpp
             const templateIframe = `
-                <div class="code-block" style="margin-bottom: 30px;">
-                    <h2 class="file-title"> ${nomeArquivoOriginal} </h2>
-                    <div class="code">
-                        <iframe src="${caminhoBaseSistema}/program-${numProjeto}/${nomeArquivoOriginal}" frameborder="0" class="show-code"></iframe>
-                    </div>
+                <h2 class="file-title"> ${nomeArquivoOriginal} </h2>
+                <div class="iframe-source-code">
+                    <iframe src="${caminhoBaseSistema}/program-${numProjeto}/${nomeArquivoOriginal}" frameborder="0" class="show-code"></iframe>
                 </div>
             `;
 

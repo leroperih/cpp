@@ -50,6 +50,14 @@
     },
 
     {
+      "title": "Win #07 _ Reminder to Take Medicine",
+      "text": "Just a Strange Text.",
+      "tech": "C++",
+      "size": "Small",
+      "link": "pag-cpp-view-source-code.html?folder=win&project=07"
+    },
+
+    {
       "title": "Win #10 _ Mouse Program For Desktop Navigation",
       "text": "Just a Strange Text.",
       "tech": "DirectX, C++",

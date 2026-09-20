@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../../content/content/img/icon-akko.ico" type="image/x-icon">
+    <title>Meu Primeiro Exercício</title>
+    <link rel="stylesheet" href="../../../content/content/style/global-all.css" media="all">
+    <link rel="stylesheet" href="../../../content/content/style/global-desktop.css" media="screen and (min-width: 600px)">
+    <link rel="stylesheet" href="../style/style-view-annot-cpp-all.css" media="all">
+    <link rel="stylesheet" href="../style/style-view-annot-cpp-desktop.css" media="screen and (min-width: 600px)">
+
+</head>
+<body class="scroll">
+
+
+
+    <main>
+
+
+        <div id="title">
+
+            <div id="container-back">
+                <div class="icon">
+                    <a href="../../pag-cpp-annotations.html"><img src="../../../content/content/img/icon-button-back.png" alt=""></a>
+                </div>
+            </div>
+
+            <h1>Gráficos - Teoria de Shadow Maps Omnidirecionais</h1>
+
+        </div>
+
+        <div>
+
+            <p>Aqui está a explicação passo a passo de como isso funciona no seu pipeline C++ e HLSL:</p>
+
+            <h2>1. A Fase de Gravação (Renderização do Cubemap)</h2>
+
+            <p>Quando você gera o shadow cube, você posiciona uma câmera virtual no centro da sua lâmpada e renderiza a cena em 6 direções diferentes (as faces do cubo).</p>
+
+            <ul>
+                <li>O seu pixel shader em HLSL não salva cores. Ele salva a distância linear (profundidade) entre a lâmpada e o primeiro objeto que a luz encontra.</li>
+                <li>Se há uma primeira parede perto da lâmpada, o valor gravado naquela direção do cubemap será uma distância curta (ex: 2 metros).</li>
+            </ul>
+
+            <h2>2. A Fase de Leitura (Renderização da Cena Principal)</h2>
+
+            <p>Quando você vai desenhar o seu cenário final na tela (o frame que o jogador vê), o seu Pixel Shader calcula a iluminação de cada parede. Para saber se a segunda parede recebe luz ou sombra, o HLSL faz o seguinte teste:</p>
+
+            <ol>
+                <li>Calcula a distância real: O shader mede a distância real entre a lâmpada e o pixel atual da segunda parede (digamos que seja 10 metros).</li>
+                <li>Amostra o Cubemap: O shader usa o vetor de direção (Lâmpada \(\rightarrow \) Segunda Parede) para ler o valor guardado no seu Shadow Cubemap.</li>
+                <li>A Comparação: Ele recupera o valor que você "salvou" na primeira fase. O Cubemap responde: "O objeto mais próximo que eu vi nessa direção estava a 2 metros".</li>
+                <li>O Resultado: O shader compara os dois valores:</li>
+            </ol>
+
+            <code>
+                Distância Real (10m) > Distância Salva (2m)
+            </code>
+
+            <p>Como a distância real é maior, o shader conclui que algo bloqueou a luz no caminho (a primeira parede). Portanto, o pixel da segunda parede é desenhado na sombra.</p>
+
+            <h2>O Efeito de "Marca Gravada"</h2>
+
+            <p>A luz não "atravessa" a primeira parede no seu cálculo porque o Shadow Map funciona como um bloqueador de linha de visão. Uma vez que a primeira parede gravou a sua profundidade no Cubemap, ela protege tudo o que está atrás dela (na mesma direção vetorial) de receber a luz daquela lâmpada específica.</p>
+
+            <p>Se você mover a segunda parede mais para trás ou para o lado, ela continuará projetando a sombra exatamente no formato da silhueta da primeira parede, pois o vetor de amostragem do Cubemap continuará batendo na "marca" de 2 metros deixada pela primeira parede.</p>
+
+            <p>Para deixar o seu sistema ainda melhor, você está enfrentando problemas com Shadow Acne (aqueles artefatos de listras pretas na parede) ou Peter Panning (sombras que parecem flutuar longe do objeto)? Se quiser, posso te mostrar como aplicar um Depth Bias ou fazer um PCF (Percentage-Closer Filtering) no HLSL para suavizar as bordas dessas sombras!</p>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <footer>
+        <div>
+        </div>
+        <div>
+            <p>Annotations 0001</p>
+            <a href="annot-cpp-0002.html"><img src="../../../content/content/img/icon-arrow-next.png" alt="próximo exercício"></a>
+        </div>
+    </footer>
+
+
+
+</body>
+</html>

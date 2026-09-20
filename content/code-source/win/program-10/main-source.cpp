@@ -46,7 +46,7 @@ int main()
 	else { my_ShowProgramStatus_Function(ATTEMPT_SUCCESS, "register", "HotKey #01"); }
 
 	// HOTKEY #01
-	if (!RegisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACIVATE_ARTMODE, MOD_CONTROL | MOD_SHIFT, VK_F2))
+	if (!RegisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACTIVATE_ARTMODE, MOD_CONTROL | MOD_SHIFT, VK_F2))
 	{
 		UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
 		DestroyWindow(global_Main_hWnd);
@@ -60,7 +60,7 @@ int main()
 	// MOUSE HOOK
 	if (!(global_hHook = SetWindowsHookExW(WH_MOUSE_LL, HookProcedure, GetModuleHandle(NULL), NULL)))
 	{
-		UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACIVATE_ARTMODE);
+		UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_ACTIVATE_ARTMODE);
 		UnregisterHotKey(global_Main_hWnd, HOTKEY_CODEMSG_TOGGLE_REMAPPING);
 		DestroyWindow(global_Main_hWnd);
 		my_ShowProgramStatus_Function(ATTEMPT_FAILED, "create", "Mouse Hook");
@@ -224,16 +224,16 @@ LRESULT CALLBACK WindowProcedure(HWND Wnd_Handle, UINT Wnd_Msg, WPARAM wParam, L
 
 			will_Allow_MouseRemapping = !will_Allow_MouseRemapping;
 			std::cout << "\n | Modificated: The remapping logic of the program was turned " << (will_Allow_MouseRemapping ? "on" : "off") << std::endl;
-			my_ShowToggleAdvice( L"Mouse Remapping: " , will_Allow_MouseRemapping );
+			my_ShowToggleAdvice(L"Mouse Remapping: ", will_Allow_MouseRemapping);
 
 		}
 
-		if (wParam == HOTKEY_CODEMSG_ACIVATE_ARTMODE)
+		if (wParam == HOTKEY_CODEMSG_ACTIVATE_ARTMODE)
 		{
 
 			will_Allow_ArtMode = !will_Allow_ArtMode;
 			std::cout << "\n | Modificated: The ArtMode of the program was turned " << (will_Allow_ArtMode ? "on" : "off") << std::endl;
-			my_ShowToggleAdvice( L"ArtMode: " , will_Allow_ArtMode );
+			my_ShowToggleAdvice(L"ArtMode: ", will_Allow_ArtMode);
 
 		}
 
@@ -273,7 +273,7 @@ LRESULT CALLBACK HookProcedure(int Hook_Msg, WPARAM wParam, LPARAM lParam)
 		{
 			is_Gimp_Active = true;
 		}
-		else { is_Gimp_Active - false; }
+		else { is_Gimp_Active = false; }
 
 
 
@@ -287,149 +287,149 @@ LRESULT CALLBACK HookProcedure(int Hook_Msg, WPARAM wParam, LPARAM lParam)
 
 
 
-				// RIGHT MOUSE BUTTON
-				if (wParam == WM_RBUTTONDOWN)
+			// RIGHT MOUSE BUTTON
+			if (wParam == WM_RBUTTONDOWN)
+			{
+
+				if (pMouseStruct->flags & LLMHF_INJECTED)
 				{
-
-					if (pMouseStruct->flags & LLMHF_INJECTED)
-					{
-						return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
-					}
-
-					init_Cursor = pMouseStruct->pt;
-					return 1;
-
-				}
-				else if (wParam == WM_RBUTTONUP)
-				{
-					if (pMouseStruct->flags & LLMHF_INJECTED)
-					{
-						return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
-					}
-
-					POINT final_Cursor = pMouseStruct->pt;
-
-					{
-						std::lock_guard<std::mutex> lock(queueMutex);
-						actionQueue.push({ (final_Cursor.x - init_Cursor.x) , (final_Cursor.y - init_Cursor.y) , "Right " });
-					}
-					queueCV.notify_one();
-
-					return 1;
-
+					return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
 				}
 
+				init_Cursor = pMouseStruct->pt;
+				return 1;
 
-
-				// MIDDLE MOUSE BUTTON
-				if (wParam == WM_MBUTTONDOWN)
+			}
+			else if (wParam == WM_RBUTTONUP)
+			{
+				if (pMouseStruct->flags & LLMHF_INJECTED)
 				{
-
-					if (pMouseStruct->flags & LLMHF_INJECTED)
-					{
-						return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
-					}
-
-					init_Cursor = pMouseStruct->pt;
-					return 1;
-
+					return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
 				}
-				else if (wParam == WM_MBUTTONUP)
+
+				POINT final_Cursor = pMouseStruct->pt;
+
 				{
-					if (pMouseStruct->flags & LLMHF_INJECTED)
-					{
-						return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
-					}
-
-					POINT final_Cursor = pMouseStruct->pt;
-
-					{
-						std::lock_guard<std::mutex> lock(queueMutex);
-						actionQueue.push({ (final_Cursor.x - init_Cursor.x) , (final_Cursor.y - init_Cursor.y) , "Middle" });
-					}
-					queueCV.notify_one();
-
-					return 1;
-
+					std::lock_guard<std::mutex> lock(queueMutex);
+					actionQueue.push({ (final_Cursor.x - init_Cursor.x) , (final_Cursor.y - init_Cursor.y) , "Right " });
 				}
+				queueCV.notify_one();
+
+				return 1;
+
+			}
+
+
+
+			// MIDDLE MOUSE BUTTON
+			if (wParam == WM_MBUTTONDOWN)
+			{
+
+				if (pMouseStruct->flags & LLMHF_INJECTED)
+				{
+					return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
+				}
+
+				init_Cursor = pMouseStruct->pt;
+				return 1;
+
+			}
+			else if (wParam == WM_MBUTTONUP)
+			{
+				if (pMouseStruct->flags & LLMHF_INJECTED)
+				{
+					return CallNextHookEx(NULL, Hook_Msg, wParam, lParam);
+				}
+
+				POINT final_Cursor = pMouseStruct->pt;
+
+				{
+					std::lock_guard<std::mutex> lock(queueMutex);
+					actionQueue.push({ (final_Cursor.x - init_Cursor.x) , (final_Cursor.y - init_Cursor.y) , "Middle" });
+				}
+				queueCV.notify_one();
+
+				return 1;
+
+			}
 
 
 
 		}
 		else
 		{
-				
 
 
-				if ((wParam == WM_XBUTTONDOWN || wParam == WM_NCXBUTTONDOWN) && is_Gimp_Active)
+
+			if ((wParam == WM_XBUTTONDOWN || wParam == WM_NCXBUTTONDOWN) && is_Gimp_Active)
+			{
+
+				// O HIWORD do mouseData contém qual XBUTTON foi usado
+				WORD btnType = HIWORD(pMouseStruct->mouseData);
+
+				if (btnType == XBUTTON1)
+				{
+					std::cout << "\n | XBUTTON1:  Shortcut    [ remapped = Z ]  &  [ action = Undo ]" << std::endl;
+					my_SendCommand_Function(0, 0, 'Z');
+				}
+				else if (btnType == XBUTTON2)
+				{
+					std::cout << "\n | XBUTTON1:  Shortcut    [ remapped = X ]  &  [ action = Redo ]" << std::endl;
+					my_SendCommand_Function(0, 0, 'X');
+				}
+			}
+
+
+			if (will_Allow_ArtMode)
+			{
+
+				if (wParam == WM_MBUTTONDOWN)
 				{
 
-					// O HIWORD do mouseData contém qual XBUTTON foi usado
-					WORD btnType = HIWORD(pMouseStruct->mouseData);
+					init_Cursor = pMouseStruct->pt;
 
-					if (btnType == XBUTTON1)
-					{
-						std::cout << "\n | XBUTTON1:  Shortcut    [ remapped = Z ]  &  [ action = Undo ]" << std::endl;
-						my_SendCommand_Function( 0 , 0 , 'Z');
-					}
-					else if (btnType == XBUTTON2)
-					{
-						std::cout << "\n | XBUTTON1:  Shortcut    [ remapped = X ]  &  [ action = Redo ]" << std::endl;
-						my_SendCommand_Function( 0 , 0 , 'X' );
-					}
 				}
-
-
-				if (will_Allow_ArtMode)
+				else if (wParam == WM_MBUTTONUP)
 				{
 
-					if (wParam == WM_MBUTTONDOWN)
+					POINT final_Cursor = pMouseStruct->pt;
+
+					int dx = init_Cursor.x - final_Cursor.x;
+					int dy = init_Cursor.y - final_Cursor.y;
+
+					bool isThereAny_Remap = ((abs(dx) < MAX_REMAPLESS_DISPLACEMENT) && (abs(dy) < MAX_REMAPLESS_DISPLACEMENT));
+
+					if ((!was_Tool_Changed) && is_Gimp_Active && isThereAny_Remap)
 					{
-
-							init_Cursor = pMouseStruct->pt;
-
+						std::cout << "\n | Flip View Horizontal: flip" << std::endl;
+						SendMessage((GetForegroundWindow()), WM_MBUTTONUP, NULL, NULL);
+						my_SendCommand_Function(0, 0, 'D');
 					}
-					else if (wParam == WM_MBUTTONUP)
+					was_Tool_Changed = false;
+				}
+
+				else if (wParam == WM_RBUTTONUP && is_Gimp_Active)
+				{
+
+					if ((GetAsyncKeyState(VK_MBUTTON) & 0x8000))
 					{
-
-							POINT final_Cursor = pMouseStruct->pt;
-
-							int dx = init_Cursor.x - final_Cursor.x;
-							int dy = init_Cursor.y - final_Cursor.y;
-
-							bool isThereAny_Remap = ((abs(dx) < MAX_REMAPLESS_DISPLACEMENT) && (abs(dy) < MAX_REMAPLESS_DISPLACEMENT));
-
-							if ( (!was_Tool_Changed) && is_Gimp_Active && isThereAny_Remap )
-							{
-									std::cout << "\n | Flip View Horizontal: flip" << std::endl;
-									SendMessage( (GetForegroundWindow()) , WM_MBUTTONUP , NULL , NULL );
-									my_SendCommand_Function( 0 , 0 , 'D' );
-							}
-							was_Tool_Changed = false;
-					}
-
-					else if (wParam == WM_RBUTTONUP && is_Gimp_Active)
-					{
-
-							if ( (GetAsyncKeyState(VK_MBUTTON) & 0x8000) )
-							{
-									is_Brush_or_Eraser = !is_Brush_or_Eraser;
-									std::cout << "\n | Selected Tool: " << ( is_Brush_or_Eraser ? "Eraser" : "Brush") << std::endl;
-									if (is_Brush_or_Eraser)
-									{
-										my_SendCommand_Function( 0 , 0 , 'E' );
-										was_Tool_Changed = true;
-									}
-									else
-									{
-										my_SendCommand_Function(0, 0, 'B');
-										was_Tool_Changed = true;
-									}
-							}
-
+						is_Brush_or_Eraser = !is_Brush_or_Eraser;
+						std::cout << "\n | Selected Tool: " << (is_Brush_or_Eraser ? "Eraser" : "Brush") << std::endl;
+						if (is_Brush_or_Eraser)
+						{
+							my_SendCommand_Function(0, 0, 'E');
+							was_Tool_Changed = true;
+						}
+						else
+						{
+							my_SendCommand_Function(0, 0, 'B');
+							was_Tool_Changed = true;
+						}
 					}
 
 				}
+
+			}
 
 
 
@@ -457,21 +457,21 @@ LRESULT CALLBACK AdviceProcedure(HWND hWnd, UINT Wnd_Msg, WPARAM wParam, LPARAM 
 
 	switch (Wnd_Msg)
 	{
-		case WM_CTLCOLORSTATIC:
+	case WM_CTLCOLORSTATIC:
 
 
 
-					{
-						HDC hdcStatic = (HDC)wParam;
-						SetTextColor(hdcStatic, RGB(255, 255, 255)); // Texto Branco
-						SetBkMode(hdcStatic, TRANSPARENT); // Fundo do texto transparente
-						return (LRESULT)GetStockObject(HOLLOW_BRUSH); // Retorna um pincel vazio para o fundo
-					}
+	{
+		HDC hdcStatic = (HDC)wParam;
+		SetTextColor(hdcStatic, RGB(255, 255, 255)); // Texto Branco
+		SetBkMode(hdcStatic, TRANSPARENT); // Fundo do texto transparente
+		return (LRESULT)GetStockObject(HOLLOW_BRUSH); // Retorna um pincel vazio para o fundo
+	}
 
-				break;
-		default:
+	break;
+	default:
 
-			return DefWindowProcW(hWnd, Wnd_Msg, wParam, lParam);
+		return DefWindowProcW(hWnd, Wnd_Msg, wParam, lParam);
 
 	}
 

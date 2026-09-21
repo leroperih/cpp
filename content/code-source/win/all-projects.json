@@ -2,6 +2,10 @@
   "projects": [
 
     {
+      "folder": "01",
+      "file-01": "main-source.cpp"
+    },
+    {
       "folder": "02",
       "file-01": "main-source.cpp"
     },

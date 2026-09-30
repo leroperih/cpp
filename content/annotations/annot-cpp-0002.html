@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../content/content/img/icon-akko.ico" type="image/x-icon">
+    <title>Window 11 Security Test</title>
+    <link rel="stylesheet" href="../../../content/content/style/global-all.css" media="all">
+    <link rel="stylesheet" href="../../../content/content/style/global-desktop.css" media="screen and (min-width: 600px)">
+    <link rel="stylesheet" href="../style/cpp-all.css" media="all">
+    <link rel="stylesheet" href="../style/cpp-desktop.css" media="screen and (min-width: 600px)">
+</head>
+<body class="scroll">
+    <!-- PERSONAL PROJECT SOURCE -->
+    <!-- HEADER -->
+    <header>
+
+        <div>
+            <div id="container-waifu" class="icon">
+                <!-- PREVIOUS PAGE -->
+                <a href="../../pag-cpp-annotations.html" tabindex="1">
+                    <img src="../../../content/content/img/icon-button-back.png" alt="preview botton icon">
+                </a>
+            </div>
+
+            <div id="container-title">
+                <!-- PAGE TITLE -->
+                <div>
+                    <h1>How to Create a Android Project!</h1>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div>
+
+            <div id="container-burge" class="icon">
+                <div tabindex="2">
+                    <div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- MAIN -->
+    <main>
+
+        <div class="exercises-board-container">
+
+            <h1>Primeiro</h1>
+
+            <div class="exercises-board">
+                <h2>1. Alterando para o Tipo Makefile</h2>
+                <ol>
+                    <li>1. Clique com o botão direito no seu projeto no Solution Explorer e selecione Propriedades.</li>
+                    <li>2. No topo, certifique-se de selecionar Todas as Configurações (All Configurations)</li>
+                    <li>3. Vá em Propriedades de Configuração > Geral.</li>
+                    <li>4. Em Tipo de Configuração (Configuration Type), mude para Makefile. Clique em Aplicar.</li>
+                </ol>
+                <h2>2. Configurando as Linhas de Comando</h2>
+                <p>Agora que o projeto é um Makefile, uma nova aba chamada NMake aparecerá nas propriedades. É ali que vamos mapear os botões do Visual Studio para o seu script PowerShell:</p>
+                <ol>
+                    <li>1. Vá em Propriedades de Configuração > NMake.</li>
+                    <li>2. Configure os seguintes campos:</li>
+                </ol>
+                <ul><li>Linha de Comando de Build (Build Command Line):</li></ul>
+                <code>$(ProjectDir)_build.bat</code>
+                <ul><li>Linha de Comando de Rebuild (Rebuild All Command Line):</li></ul>
+                <code>$(ProjectDir)_build.bat</code>
+                <ul><li>Linha de Comando de Limpeza (Clean Command Line):</li></ul>
+                <code>cmd /c "del /q JogoNormal.apk 2>nul & rmdir /s /q lib app\com app\src\main\obj 2>nul"</code>
+                <ol><li>3. Clique em Aplicar e Ok.</li></ol>
+            </div>
+
+        </div>
+
+        <div class="exercises-board-container">
+
+            <h1>Segundo</h1>
+
+            <div class="exercises-board">
+                <h2>1. Configurar os Caminhos de Inclusão no Visual Studio (IntelliSense)</h2>
+                <p>Para o editor de texto do Visual Studio reconhecer as funções do OpenGL ES (como glClear, glGenBuffers) e tirar os sublinhados vermelhos de erro enquanto você programa:</p>
+                <ol>
+                    <li>1. No Visual Studio, clique com o botão direito no seu projeto no Solution Explorer e selecione Propriedades.</li>
+                    <li>2. No menu lateral, expanda Propriedades de Configuração e clique em NMake.</li>
+                    <li>3. No campo Caminhos de Inclusão (Include Search Path), copie e cole exatamente este endereço:</li>
+                    <li></li>
+                </ol>
+                <code>C:\Program Files (x86)\Android\AndroidNDK\android-ndk-r23c\toolchains\llvm\prebuilt\windows-x86_64\sysroot\usr\include</code>
+                <ol><li>4. Clique em Aplicar e depois em OK.</li></ol>
+                <h2>2. Criar as Pastas que o Script Exige</h2>
+                <p>Se você tentar rodar o script agora, ele vai dar erro dizendo que não encontrou o manifesto ou os arquivos Java. Vamos criar essa estrutura básica vazia na pasta do seu projeto (horror-game) para o script ter o que compilar:</p>
+                <ol>
+                    <li>1. Abra a pasta do seu projeto no explorador de arquivos.</li>
+                    <li>2. Crie uma pasta chamada app.</li>
+                    <li>3. Dentro de app, crie a estrutura de pastas: com\exemplo\ (de modo que fique app\com\exemplo\).</li>
+                    <li>4. Volte para a pasta app, crie a estrutura: src\main\ (de modo que fique app\src\main\).</li>
+                </ol>
+
+            </div>
+
+        </div>
+
+        <div class="exercises-board-container">
+
+            <h1>Terceiro</h1>
+
+            <div class="exercises-board">
+                <h2>1. Criar o Arquivo Java (MainActivity.java)</h2>
+                <p>Este arquivo será a tela inicial do seu aplicativo. Como queremos apenas um APK normal para testar, ele vai apenas exibir uma tela padrão.</p>
+                <ol>
+                    <li>1. Vá até a pasta que você criou em seu projeto: app\com\exemplo\</li>
+                    <li>2. Crie um arquivo de texto e mude o nome completo dele para MainActivity.java (certifique-se de que a extensão não ficou .java.txt).</li>
+                    <li>3. Abra-o com o Bloco de Notas ou o próprio Visual Studio e cole o seguinte código:</li>
+                </ol>
+
+                <code>
+                    package com.exemplo;<br>
+                    <br>
+                    import android.app.Activity;<br>
+                    import android.os.Bundle;<br>
+                    import android.opengl.GLSurfaceView;<br>
+                    import javax.microedition.khronos.egl.EGLConfig;<br>
+                    import javax.microedition.khronos.opengles.GL10;<br>
+                    <br>
+                    public class MainActivity extends Activity {<br>
+                    private GLSurfaceView glView;<br>
+                    <br>
+                    // 1. Carrega o arquivo "libmain.so" gerado pelo compilador C++ do NDK<br>
+                    static {<br>
+                    System.loadLibrary("main");<br>
+                    }<br>
+                    <br>
+                    // 2. Declara as funções nativas implementadas no main.cpp<br>
+                    private native void nativoAoCriar();<br>
+                    private native void nativoMudarTela(int largura, int altura);<br>
+                    private native void nativoRenderizarQuadro();<br>
+                    <br>
+                    @Override<br>
+                    protected void onCreate(Bundle savedInstanceState) {<br>
+                    super.onCreate(savedInstanceState);<br>
+                    <br>
+                    // 3. Inicializa a View do OpenGL e define a versão 3.0<br>
+                    glView = new GLSurfaceView(this);<br>
+                    glView.setEGLContextClientVersion(3);<br>
+                    <br>
+                    // 4. Conecta os eventos de desenho do Android com o C++<br>
+                    glView.setRenderer(new GLSurfaceView.Renderer() {<br>
+                    @Override<br>
+                    public void onSurfaceCreated(GL10 gl, EGLConfig config) {<br>
+                    nativoAoCriar();<br>
+                    }<br>
+                    <br>
+                    @Override<br>
+                    public void onSurfaceChanged(GL10 gl, int width, int height) {<br>
+                    nativoMudarTela(width, height);<br>
+                    }<br>
+                    <br>
+                    @Override<br>
+                    public void onDrawFrame(GL10 gl) {<br>
+                    nativoRenderizarQuadro();<br>
+                    }<br>
+                    });<br>
+                    <br>
+                    setContentView(glView);<br>
+                    }<br>
+                    }<br>
+                </code>
+
+                <h2>2. Criar o Manifesto do Android (AndroidManifest.xml)</h2>
+                <p>O manifesto é o arquivo de configuração que diz ao sistema operacional Android qual classe deve ser executada quando o usuário clica no ícone do aplicativo.</p>
+                <ol>
+                    <li>1. Vá até a outra pasta que você criou: app\src\main\</li>
+                    <li>2. Crie um arquivo de texto e mude o nome para AndroidManifest.xml</li>
+                    <li>3. Abra o arquivo e cole a seguinte estrutura básica:</li>
+                </ol>
+                <code>
+                    &lt;?xml version="1.0" encoding="utf-8" ?&gt;<br />
+                    &lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"<br />
+                    package="com.exemplo"<br />
+                    android:versionCode="1"<br />
+                    android:versionName="1.0"&gt;<br />
+                    <br />
+                    &lt;uses-sdk android:minSdkVersion="26" android:targetSdkVersion="36" /&gt;<br />
+                    <br />
+                    &lt;application android:label="Meu App Basico"<br />
+                    android:allowBackup="true"&gt;<br />
+                    <br />
+                    &lt;activity android:name=".MainActivity"<br />
+                    android:exported="true"&gt;<br />
+                    &lt;intent-filter&gt;<br />
+                    &lt;action android:name="android.intent.action.MAIN" /&gt;<br />
+                    &lt;category android:name="android.intent.category.LAUNCHER" /&gt;<br />
+                    &lt;/intent-filter&gt;<br />
+                    &lt;/activity&gt;<br />
+                    <br />
+                    &lt;/application&gt;<br />
+                    &lt;/manifest&gt;<br />
+                </code>
+
+            </div>
+
+        </div>
+
+        <div class="exercises-board-container">
+
+            <h1>Quarto</h1>
+
+            <div class="exercises-board">
+                <h2>1. Estruturação do Código Nativo C++ (main.cpp)</h2>
+                <p>Este arquivo conterá o código C++ que recebe as instruções da MainActivity.java através do JNI e gerencia os comandos gráficos da GPU.</p>
+                <ol>
+                    <li>1. Na raiz do projeto, crie um arquivo de texto e mude o nome para main.cpp</li>
+                    <li>2. Abra o arquivo e cole a seguinte estrutura base do OpenGL ES 3.0:</li>
+                </ol>
+                <code>
+                    #include &lt;jni.h&gt;<br>
+                    #include &lt;GLES3/gl3.h&gt;<br>
+                    #include &lt;android/log.h&gt;<br>
+                    <br>
+                    #define LOG_TAG "Jogo3D"<br>
+                    #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)<br>
+                    <br>
+                    extern "C" {<br>
+                    <br>
+                    // Chamado uma vez quando a tela do OpenGL é criada<br>
+                    JNIEXPORT void JNICALL<br>
+                    Java_com_exemplo_MainActivity_nativoAoCriar(JNIEnv* env, jobject obj) {<br>
+                    LOGI("OpenGL ES 3.0 Inicializado pelo C++!");<br>
+                    <br>
+                    // Define a cor de fundo inicial (Vermelho escuro/Bordô)<br>
+                    glClearColor(0.5f, 0.0f, 0.1f, 1.0f);<br>
+                    }<br>
+                    <br>
+                    // Chamado sempre que a tela muda de tamanho (ex: rotacionar o celular)<br>
+                    JNIEXPORT void JNICALL<br>
+                    Java_com_exemplo_MainActivity_nativoMudarTela(JNIEnv* env, jobject obj, jint largura, jint altura) {<br>
+                    // Ajusta a área de desenho para o novo tamanho da tela<br>
+                    glViewport(0, 0, largura, altura);<br>
+                    }<br>
+                    <br>
+                    // Chamado em loop constante para desenhar o jogo (Frame Rate)<br>
+                    JNIEXPORT void JNICALL<br>
+                    Java_com_exemplo_MainActivity_nativoRenderizarQuadro(JNIEnv* env, jobject obj) {<br>
+                    // Limpa a tela aplicando a cor definida no glClearColor<br>
+                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);<br>
+                    }<br>
+                    }<br>
+                </code>
+
+            </div>
+
+        </div>
+
+        <div class="exercises-board-container">
+
+            <h1>Quinto</h1>
+
+            <div class="exercises-board">
+                <h2>1. Criacao da Chave de Assinatura (.keystore)</h2>
+                <p>Este passo detalha como gerar o arquivo de chave digital necessario para assinar o aplicativo (.apk), permitindo que o Android aceite a instalacao dele.</p>
+                <ol>
+                    <li>Abra o Prompt de Comando (cmd) do Windows.</li>
+                    <li>Navegue ate a pasta raiz do seu projeto utilizando o comando de navegacao cd.</li>
+                    <li>Execute a ferramenta keytool do Java utilizando os parametros de senha do seu script de build.</li>
+                </ol>
+                <code>
+                    cd /d "C:\Users\qgwolf\source\repos\android\program-zero\default-android-program"<br>
+                    <br>
+                    "C:\Program Files\Java\jdk-27\bin\keytool.exe" -genkeypair -v -keystore minha-chave.keystore -alias minha-chave -keyalg RSA -keysize 2048 -validity 10000 -storepass 123456 -keypass 123456 -dname "CN=Exemplo, OU=Desenvolvimento, O=Jogo, L=Cidade, S=Estado, C=BR"<br>
+                </code>
+                <p>Nota: O comando criara o arquivo "minha-chave.keystore" diretamente na raiz da pasta. Esse arquivo deve permanecer ao lado do seu script "_build.bat".</p>
+
+            </div>
+
+        </div>
+
+        <div class="exercises-board-container">
+
+            <h1>Sexto</h1>
+
+            <div class="exercises-board">
+                <h2>1. Criacao do Arquivo de Automacao de Build (_build.bat)</h2>
+                <p>Este passo detalha como criar o arquivo de lote (.bat) responsavel por automatizar o processo de compilacao do codigo C++ e Java, empacotamento dos recursos, alinhamento e assinatura do APK final.</p>
+                <ol>
+                    <li>Na raiz do seu projeto, crie um arquivo de texto e mude o nome completo para _build.bat (certifique-se de remover a extensao .txt).</li>
+                    <li>Clique com o botão direito no arquivo e selecione Editar (ou abra com o Bloco de Notas).</li>
+                    <li>Cole o codigo abaixo, salve e feche o arquivo. Para rodar o build, basta dar dois cliques no arquivo.</li>
+                </ol>
+                <code>
+                    @echo off<br>
+                    :: ==============================================================================<br>
+                    :: PASSO 1: CONFIGURACAO DE AMBIENTE E CAMINHOS<br>
+                    :: ==============================================================================<br>
+                    cd /d "%~dp0"<br>
+                    if not exist "lib\arm64-v8a" mkdir "lib\arm64-v8a"<br>
+                    <br>
+                    :: ==============================================================================<br>
+                    :: PASSO 2: COMPILACAO C++ (EMBUTINDO A LIBC++ DE FORMA ESTATICA)<br>
+                    :: ==============================================================================<br>
+                    echo [1/5] Compilando codigo nativo C++ (Estatico)...<br>
+                    "C:\Program Files (x86)\Android\AndroidNDK\android-ndk-r23c\toolchains\llvm\prebuilt\windows-x86_64\bin\clang++.exe" ^<br>
+                    --target=aarch64-linux-android26 ^<br>
+                    --sysroot="C:\Program Files (x86)\Android\AndroidNDK\android-ndk-r23c\toolchains\llvm\prebuilt\windows-x86_64\sysroot" ^<br>
+                    -fPIC -shared -static-libstdc++ -o "lib\arm64-v8a\libmain.so" "main.cpp" ^<br>
+                    -lGLESv3 -lGLESv2 -lEGL -llog -landroid<br>
+                    if %errorlevel% neq 0 goto erro<br>
+                    <br>
+                    :: ==============================================================================<br>
+                    :: PASSO 3: COMPILACAO JAVA (.JAVA -&gt; .CLASS)<br>
+                    :: ==============================================================================<br>
+                    echo [2/5] Compilando arquivos Java...<br>
+                    "C:\Program Files\Java\jdk-27\bin\javac.exe" ^<br>
+                    --release 8 ^<br>
+                    -cp "C:\Program Files (x86)\Android\android-sdk\platforms\android-36\android.jar" ^<br>
+                    -d "app" "app\com\exemplo\MainActivity.java"<br>
+                    if %errorlevel% neq 0 goto erro<br>
+                    <br>
+                    :: ==============================================================================<br>
+                    :: PASSO 4: PROCESSAMENTO DE CODIGO (.CLASS -&gt; CLASSES.DEX)<br>
+                    :: ==============================================================================<br>
+                    echo [3/5] Transformando bytecode Java em Dex...<br>
+                    call "C:\Program Files (x86)\Android\android-sdk\build-tools\36.0.0\d8.bat" ^<br>
+                    --output app\classes.zip "app\com\exemplo\MainActivity.class" ^<br>
+                    --lib "C:\Program Files (x86)\Android\android-sdk\platforms\android-36\android.jar"<br>
+                    <br>
+                    tar -xf "app\classes.zip" -C "app"<br>
+                    del /q "app\classes.zip"<br>
+                    <br>
+                    :: ==============================================================================<br>
+                    :: PASSO 5: COMPILACAO DE RECURSOS (AAPT2)<br>
+                    :: ==============================================================================<br>
+                    echo [4/5] Compilando o AndroidManifest com AAPT2...<br>
+                    "C:\Program Files (x86)\Android\android-sdk\build-tools\36.0.0\aapt2.exe" ^<br>
+                    link -o "recursos_novo.apk" ^<br>
+                    --manifest "app\src\main\AndroidManifest.xml" ^<br>
+                    -I "C:\Program Files (x86)\Android\android-sdk\platforms\android-36\android.jar"<br>
+                    if %errorlevel% neq 0 goto erro<br>
+                    <br>
+                    :: ==============================================================================<br>
+                    :: PASSO 6: EMPACOTAMENTO, ALINHAMENTO E ASSINATURA<br>
+                    :: ==============================================================================<br>
+                    echo [5/5] Montando e assinando o APK final...<br>
+                    copy /y "app\classes.dex" "." &gt;nul<br>
+                    <br>
+                    "C:\Program Files\Java\jdk-27\bin\jar.exe" uf recursos_novo.apk classes.dex<br>
+                    "C:\Program Files\Java\jdk-27\bin\jar.exe" uf recursos_novo.apk lib<br>
+                    <br>
+                    "C:\Program Files (x86)\Android\android-sdk\build-tools\36.0.0\zipalign.exe" -v -f 4 "recursos_novo.apk" "jogo-alinhado.apk" &gt;nul<br>
+                    <br>
+                    "C:\Program Files\Java\jdk-27\bin\java.exe" -jar "C:\Program Files (x86)\Android\android-sdk\build-tools\36.0.0\lib\apksigner.jar" ^<br>
+                    sign --ks "minha-chave.keystore" --ks-pass pass:123456 --out "JogoNormal.apk" "jogo-alinhado.apk"<br>
+                    <br>
+                    del /q "jogo-alinhado.apk" 2&gt;nul<br>
+                    del /q "recursos_novo.apk" 2&gt;nul<br>
+                    del /q "classes.dex" 2&gt;nul<br>
+                    <br>
+                    echo.<br>
+                    echo ==============================================================================<br>
+                    echo APK gerado com sucesso em: %~dp0JogoNormal.apk<br>
+                    echo ==============================================================================<br>
+                    pause<br>
+                    exit /b 0<br>
+                    <br>
+                    :erro<br>
+                    echo Ocorreu um erro em alguma das etapas do Build. Verifique as mensagens acima.<br>
+                    pause<br>
+                    exit /b 1<br>
+                </code>
+
+            </div>
+
+        </div>
+
+        <div class="exercises-board-container">
+
+            <h1>milésimo</h1>
+
+            <div class="exercises-board">
+                <h2>1. Criar o Arquivo Java (MainActivity.java)</h2>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+    <footer>
+    </footer>
+
+
+
+    <script src="cpp-content/script-source/script.js"></script>
+
+
+
+</body>
+</html>
